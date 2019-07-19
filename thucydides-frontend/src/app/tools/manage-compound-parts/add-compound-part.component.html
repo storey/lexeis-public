@@ -1,0 +1,42 @@
+<h1>Add {{categoryName}}</h1>
+<div class="alert alert-warning">
+  Under most circumstances, there is no need to add a new {{categoryName}}; they should have been set up during the initial lexicon creation page.
+  <strong>Make sure</strong> you have a good reason for adding a new one if you are making this change.
+</div>
+
+<form id="itemForm" (ngSubmit)="onSubmit(itemForm)" novalidate #itemForm="ngForm">
+  <div class="form-group">
+    <label for="name">{{categoryName}}:</label>
+    <input [(ngModel)]="itemName" type="text" name="name" class="form-control" id="name" placeholder="Enter the {{categoryName}}" maxlength="64" required />
+    <small class="form-text text-muted">The {{categoryName}} should be in unicode, e.g. "ἀπο".</small>
+    <div class="invalid-feedback">
+      Please include the {{categoryName}}.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="description">Description:</label>
+    <textarea [(ngModel)]="description" name="description" class="form-control" id="description" rows="3" maxlength="800" required></textarea>
+    <div class="invalid-feedback">
+      Please provide a short description.
+    </div>
+  </div>
+
+  <p>
+    To add or remove this {{categoryName}} from lemmata, edit the lemmata themselves.
+  </p>
+
+  <!-- Submission error -->
+  <div *ngIf="report.error()">
+    <div class="alert alert-danger">
+      {{report.getErrorText()}}
+    </div>
+  </div>
+  <!-- Submit -->
+  <div *ngIf="!loadingReport; else elseSubmit">
+    <button type="submit" class="btn btn-primary">Create {{categoryName}}</button>
+  </div>
+  <ng-template #elseSubmit>
+    <button class="btn btn-primary" disabled>Creating {{categoryName}}...</button>
+  </ng-template>
+</form>

@@ -1,0 +1,80 @@
+<!-- Delete confirmation modal -->
+<ng-template #delete let-modal>
+  <div class="alert alert-danger mb-0">
+    Are you sure you want to delete this {{categoryName}}?
+  </div>
+  <div class="modal-footer pt-2 pb-2">
+    <button type="button" class="btn btn-outline-primary" (click)="modal.close(false)">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="modal.close(true)">Yes</button>
+  </div>
+</ng-template>
+
+
+<h1>Edit/Delete {{categoryName}}</h1>
+
+<div *ngIf="isLoading; else notLoading">
+  <div class="alert alert-info">
+    Loading...
+  </div>
+</div>
+<ng-template #notLoading>
+  <div *ngIf="item.isError() else elseEntry">
+    <div class="alert alert-danger">
+      {{item.getErrorText()}}
+    </div>
+  </div>
+  <ng-template #elseEntry>
+    <h2>Edit {{categoryName}}</h2>
+    <form id="itemForm" (ngSubmit)="onSubmit(itemForm)" novalidate #itemForm="ngForm">
+      <div class="form-group">
+        <label for="name">{{categoryName}}:</label>
+        <input [(ngModel)]="itemName" type="text" name="name" class="form-control" id="name" placeholder="Enter the {{categoryName}}" maxlength="64" required />
+        <small class="form-text text-muted">The {{categoryName}} should be in unicode, e.g. "ἀγαθός".</small>
+        <div class="invalid-feedback">
+          Please include the {{categoryName}}.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description:</label>
+        <textarea [(ngModel)]="description" name="description" class="form-control" id="description" rows="3" maxlength="800" required></textarea>
+        <div class="invalid-feedback">
+          Please provide a short description.
+        </div>
+      </div>
+
+      <p>
+        To add or remove this compound part from lemmata, edit the lemmata themselves.
+      </p>
+
+      <!-- Submission error -->
+      <div *ngIf="editReport.error()">
+        <div class="alert alert-danger">
+          {{editReport.getErrorText()}}
+        </div>
+      </div>
+      <!-- Submit -->
+      <div *ngIf="!loadingEdit; else elseSubmit">
+        <button type="submit" class="btn btn-primary">Make Changes to {{categoryName}}</button>
+      </div>
+      <ng-template #elseSubmit>
+        <button class="btn btn-primary" disabled>Making Changes...</button>
+      </ng-template>
+    </form>
+
+    <h2 class="mt-5">Delete {{categoryName}}</h2>
+    <div *ngIf="deleteReport.error()">
+      <div class="card mb-2">
+        <div class="card-body alert-danger">
+          {{deleteReport.getErrorText()}}
+        </div>
+      </div>
+    </div>
+    <div *ngIf="loadingDelete; else elseDelete">
+      <button class="btn btn-danger" [disabled]="true">Deleting {{item.name}}...</button>
+    </div>
+    <ng-template #elseDelete>
+      <button class="btn btn-danger" (click)="clickDelete(delete)">Delete {{item.name}}</button>
+    </ng-template>
+  </ng-template>
+</ng-template>

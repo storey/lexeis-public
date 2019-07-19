@@ -1,0 +1,20 @@
+<p>
+  {{myDef.text.start}}
+  <!-- Has to be on one line for display purposes -->
+  <span *ngFor="let ref of myDef.text.refList"><a [routerLink]="getRouterLink(ref)">{{ref.ref}}</a><span>{{ref.note}}</span></span>
+</p>
+<div *ngIf="myDef.text.keyPassageList.length > 0" class="keyPassagesHolder">
+  <span class="keyPassageTitle">{{getKeyPassageTitle()}}</span>
+  <ul class="keyPassageList">
+    <li *ngFor="let kp of myDef.text.keyPassageList">
+      <span class="keyPassageItem"><a [routerLink]="getRouterLink(kp)">{{kp.ref}}</a>: <span class="keyPassageGreek">{{kp.greek}}</span> </span>
+      <span class="keyPassageItem"> "{{kp.english}}"</span>
+    </li>
+  </ul>
+</div>
+<ol *ngIf="myDef.subList.length > 0">
+  <li *ngFor="let sublist of myDef.subList" [ngClass]="{'target-meaning': isTargetMeaning(sublist)}" id="{{sublist.text.identifier}}">
+    <full-definition-display [myDef]="sublist" [lemma]="lemma"
+      [targetMeaning]="targetMeaning" [isMain]="isMain"></full-definition-display>
+  </li>
+</ol>

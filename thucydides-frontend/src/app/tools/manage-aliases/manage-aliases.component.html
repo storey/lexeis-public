@@ -1,0 +1,28 @@
+<p>
+  Aliases are searchable terms that link to a lemma, e.g. πλείων -> πολύς.
+</p>
+
+<h2>Add a New Alias:</h2>
+<a routerLink="/tools/addAlias" class="btn btn-primary">Add a new alias</a>
+
+<h2 class="mt-3">Choose an Alias to Edit/Delete</h2>
+<p>
+  Select an alias from the list below.
+</p>
+
+<hr/>
+
+<div *ngIf="isLoading; else notLoading">
+  <div class="alert alert-info">
+    Loading...
+  </div>
+</div>
+<ng-template #notLoading>
+  <mini-pagination [list]="aliases" [page]="page" [basePath]="BASE_PATH">
+    <div class="list-group">
+      <a *ngFor="let a of aliases.list" class="list-group-item list-group-item-action" routerLink="{{a.getEditLink()}}">
+        <span class="font-weight-bold">{{a.alias}}</span> (links to {{a.lemma}})
+      </a>
+    </div>
+  </mini-pagination>
+</ng-template>

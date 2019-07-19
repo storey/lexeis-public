@@ -1,0 +1,36 @@
+/* Classe for displaying error and success messages for forms */
+
+.display-none {
+  display: none !important;
+}
+
+.character-warning-holder {
+  background: white;
+  border: 1px lightgray solid;
+  border-radius: 3px;
+  padding: 3px 6px;
+}
+
+.required-star {
+  color: red;
+}
+
+.ng-valid.ng-touched {
+  border-color: #28a745;
+}
+
+.ng-invalid.ng-touched {
+  border-color: #dc3545;
+}
+
+
+.ng-valid.ng-touched ~ .valid-feedback {
+  display: block !important;
+}
+.ng-invalid.ng-touched ~ .invalid-feedback {
+  display: block !important;
+}
+
+.button-holder {
+  display: inline-block;
+}

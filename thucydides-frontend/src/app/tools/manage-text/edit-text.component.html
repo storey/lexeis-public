@@ -1,0 +1,48 @@
+<h1>Edit Text</h1>
+<div *ngIf="loading; else notLoading">
+  <div class="alert alert-info">
+    Loading...
+  </div>
+</div>
+<ng-template #notLoading>
+  <div *ngIf="section.isError() else elseText">
+    <div class="alert alert-danger">
+      {{section.errorMessage()}}
+    </div>
+  </div>
+  <ng-template #elseText>
+    <h2>Section {{section.sectionCode}}</h2>
+    <form id="lemmaForm" (ngSubmit)="onSubmit(lemmaForm)" novalidate #lemmaForm="ngForm">
+      <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Token</th>
+          <th>Lemma</th>
+          <th>Lemma Meaning</th>
+          <th>Context</th>
+          <th>Edit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let token of section.tokens">
+          <td>{{token["token"]}}</td>
+          <td>{{token["lemma"]}}</td>
+          <td>{{token.getMeaningString()}}</td>
+          <td>{{token.getContextString()}}</td>
+          <td>
+            <a *ngIf="token.context != -1" routerLink="{{token.getEditLink()}}" class="btn btn-sm btn-light">Edit</a>
+          </td>
+        </tr>
+      </tbody>
+      </table>
+
+      <!-- Submit -->
+      <div *ngIf="!loadingReport; else elseSubmit">
+        <button type="submit" class="btn btn-primary">Update</button>
+      </div>
+      <ng-template #elseSubmit>
+        <button class="btn btn-primary" disabled>Updating...</button>
+      </ng-template>
+    </form>
+  </ng-template>
+</ng-template>

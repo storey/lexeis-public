@@ -1,0 +1,59 @@
+<div *ngIf="report.isSuccess(); else elseSuccess">
+  <div>
+    <div class="alert alert-success d-inline-block" role="alert">
+      Your issue was submitted successfully!
+    </div>
+  </div>
+  <button class="btn btn-primary" (click)="newIssue()">Submit another issue</button>
+  <a *ngIf="loginInfo.loggedIn && !useLocation" class="btn btn-outline-primary ml-2" routerLink="/user">User Dashboard</a>
+</div>
+<ng-template #elseSuccess>
+  <div *ngIf="report.error()">
+    <div class="card">
+      <div class="card-body alert-danger">
+        {{report.getErrorText()}}
+      </div>
+    </div>
+  </div>
+
+  <p>
+    <small><span class="required-star">*</span> = required</small>
+  </p>
+  <form id="issueForm" (ngSubmit)="onSubmit(issueForm)" novalidate #issueForm="ngForm">
+    <div *ngIf="!loginInfo.loggedIn; else elseEmail">
+      <div class="form-group">
+        <label for="userEmail"><span class="required-star">*</span> Email address</label>
+        <input [(ngModel)]="userEmail" email type="email" name="email" class="form-control" id="userEmail" placeholder="Enter email" maxlength="100" required />
+        <div class="invalid-feedback">
+          Please include a valid email or <a href="../login.php">log in</a>.
+        </div>
+      </div>
+    </div>
+    <ng-template #elseEmail>
+      <div class="form-group">
+        <input type="hidden" name="email" value="">
+      </div>
+    </ng-template>
+
+    <div class="form-group">
+      <label for="locationInput">What page is the issue on?</label>
+      <input [(ngModel)]="issueLocation" type="text" name="location" class="form-control" id="locationInput" placeholder="Link to page with the issue" value="{{issueLocation}}" maxlength="800" />
+    </div>
+    <div class="form-group">
+      <label for="commentInput"><span class="required-star">*</span> What is the issue? Please provide as much context as you can.</label>
+      <textarea [(ngModel)]="issueComment" name="comment" class="form-control" id="commentInput" rows="3" maxlength="800" (keyup)="countCommentCharacters($event)" required></textarea>
+      <p [ngClass]="getCommentLengthWarningClasses()">
+        <small class="character-warning-holder">{{getCommentLengthWarning()}}</small>
+      </p>
+      <div class="invalid-feedback">
+        Please provide context for the issue.
+      </div>
+    </div>
+    <div *ngIf="!loading; else elseSubmit">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+    <ng-template #elseSubmit>
+      <button class="btn btn-primary" disabled>Submitting...</button>
+    </ng-template>
+  </form>
+</ng-template>

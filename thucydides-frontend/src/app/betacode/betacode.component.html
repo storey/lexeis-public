@@ -1,0 +1,52 @@
+<h2>Transcription Guide</h2>
+<p>Below are the transcription tables for Betacode and English transcriptions.</p>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-md-6 order-0 order-md-0">
+      <h3>Beta Code</h3>
+      <p>
+        Beta Code is a system for representing Ancient Greek text using only standard
+        ASCII characters - keys you can see on a standard Latin keyboard. Below is a
+        transcription guide.
+      </p>
+    </div>
+    <div class="col-12 col-md-6 order-2 order-md-1 mt-4 mt-md-0">
+      <h3>English Transcription</h3>
+      <p>
+        We also provide a roughly phonetic English transcription system, outlined below.
+      </p>
+    </div>
+    <div class="col-12 col-md-6 order-1 order-md-2">
+      <table class="table table-striped table-sm narrow-table">
+        <thead>
+          <tr>
+            <th>Greek Character(s)</th>
+            <th>Betacode</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let pair of pairs_beta">
+            <td>{{pair.greek}}</td>
+            <td>{{pair.beta}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-12 col-md-6 order-3 order-md-3">
+      <table class="table table-striped table-sm narrow-table">
+        <thead>
+          <tr>
+            <th>Greek Character(s)</th>
+            <th>Transcription</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let pair of pairs_latin">
+            <td>{{pair.greek}}</td>
+            <td>{{pair.latin}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

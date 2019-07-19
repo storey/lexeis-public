@@ -1,0 +1,89 @@
+<h1>Manage Lemma Meaning Links</h1>
+
+<div *ngIf="isLoading; else notLoading">
+  <div class="alert alert-info">
+    Loading...
+  </div>
+</div>
+<ng-template #notLoading>
+  <div *ngIf="info.isError(); else elseEntry">
+    <div class="alert alert-danger">
+      {{info.getErrorText()}}
+    </div>
+  </div>
+  <ng-template #elseEntry>
+    <div class="container">
+      <div class="row" appMatchHeight="equalHeightCol">
+        <div class="col-12 col-md-6 order-0 order-md-0">
+          <h2>Long Definition</h2>
+          <p class="text-right">
+            <button class="btn btn-primary" (click)="loadDefInfo()">Autoload Long Definition Meanings</button>
+          </p>
+        </div>
+        <div class="col-12 col-md-6 order-2 order-md-1 mt-4 mt-md-0">
+          <h2 class="">Meanings</h2>
+          <small class="form-text text-muted text-center mb-3">(Meaning should be in the format I.1, II.C.5, etc.)</small>
+          <div *ngIf="this.overlapList.length > 0">
+            <div class="alert alert-warning">
+              This lemma appears multiple times in the same section at {{getOverlapWarning()}}.
+              Make sure you get the lemma meaning correct for each lemma.
+              <span class="font-italic">The auto-loading will choose one meaning
+              for every word in a section, which is likely incorrect. </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 order-1 order-md-2">
+          <div class="equalHeightCol baseColumn">
+            <!-- Show full definition -->
+            <div class="card">
+              <div class="card-body">
+                <div *ngIf="info.hasLongDefinition; else elseDefinition">
+                  <multi-definition [fullDefinition]="info.fullDefinition" [targetMeaning]=""
+                    [oldLongDefinition]="info.oldLongDefinition" [token]="info.token"
+                    [authorName]="info.authorName"></multi-definition>
+                </div>
+                <ng-template #elseDefinition>
+                  <p>
+                    {{info.token}} has no long definition.
+                  </p>
+                </ng-template>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 order-3 order-md-3">
+          <form  id="meaningForm" (ngSubmit)="onSubmit(meaningForm)" novalidate #meaningForm="ngForm">
+            <div class="equalHeightCol matchColumn mb-2">
+              <div class="container">
+                <div *ngFor = "let o of info.occurrences; let i = index" class="form-group row">
+                  <label for="lemmaMeaning{{i}}" class="col-md-6 col-form-label text-left text-md-right">{{info.occurrences[i][0]}} ({{info.occurrences[i][3]}}):</label>
+                  <div class="col-md-6">
+                    <input [(ngModel)]="lemmaMeanings[i]" type="text" name="lemmaMeaning{{i}}" class="form-control" id="lemmaMeaning{{i}}" placeholder="Enter the Lemma Meaning" maxlength="64" [appInvalidReference]="validReferences"/>
+                    <div class="invalid-feedback">
+                      This is not a valid reference based on the long definition.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Submission error -->
+            <div *ngIf="report.error();">
+              <div class="alert alert-danger">
+                {{report.getErrorText()}}
+              </div>
+            </div>
+            <!-- Submit -->
+            <div *ngIf="!loadingReport; else elseSubmit">
+              <button type="submit" class="btn btn-primary">Update Meanings</button>
+            </div>
+            <ng-template #elseSubmit>
+              <button class="btn btn-primary" disabled>Updating Meanings...</button>
+            </ng-template>
+          </form>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ng-template>

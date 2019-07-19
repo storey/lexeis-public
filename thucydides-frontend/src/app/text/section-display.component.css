@@ -1,0 +1,28 @@
+.central-alert {
+  max-width: 600px;
+  margin: 10px auto;
+}
+
+
+/* Medium, Large, Extra Large*/
+@media (min-width: 768px) {
+  .text-holder {
+    margin-left: 15px;
+  }
+}
+
+/* Medium, Large, Extra Large*/
+@media (min-width: 768px) {
+  /* we want this to be a little closer to the center of the screen */
+  .title-navigator {
+    margin-left: -25px;
+  }
+}
+
+/* Large, Extra Large*/
+@media (min-width: 992px) {
+  /* we want this to be a little closer to the center of the screen */
+  .title-navigator {
+    margin-left: -50px;
+  }
+}

@@ -1,0 +1,13 @@
+.illustration-holder {
+  position: relative;
+  min-width: 0;
+  background-clip: border-box;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: .25rem;
+  padding: 15px;
+  margin-bottom: 10px;
+}
+
+.tall-select {
+  height: 200px !important;
+}

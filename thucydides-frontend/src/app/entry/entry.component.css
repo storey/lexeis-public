@@ -1,0 +1,120 @@
+.mainContainer {
+  min-height: 150px;
+}
+
+.panel-list-item {
+  margin: 15px;
+}
+
+.title-link {
+  color: #337ab7;
+}
+
+h2.card-title {
+  margin-bottom: 0px;
+}
+
+.list-group p {
+  margin-bottom: 0px;
+}
+
+.entry-subsection-block:first {
+  margin-top: 0px;
+}
+
+.entry-subsection-block {
+  margin-top: 15px;
+}
+
+.entry-subsection-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.alert-top-space {
+  margin-top: 10px;
+}
+
+/* More link info */
+
+.more-link {
+  font-size: 10px;
+  text-align: right;
+}
+
+a {
+  cursor: pointer;
+}
+
+/* Occurrence display */
+.occurrenceHolder {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.occurrenceItem {
+  display: inline-block;
+  min-width: 60px;
+  flex-grow: 1;
+  margin: 0px 5px 15px 5px;
+  border: 1px black solid;
+}
+
+.occurrence-order-label {
+  font-weight: bold;
+  font-size: 18px;
+  margin-right: 3px;
+}
+
+.contextLabels {
+  font-size: 18px;
+  margin-left: 20px;
+  font-weight: bold;
+}
+
+.default-ul {
+  list-style-type: disc;
+}
+
+.break-words {
+  word-break: break-word;
+}
+
+.status-icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  border: 2px solid gray;
+  background-color: white;
+  margin-right: 5px;
+
+  cursor: pointer;
+}
+
+.status-icon-0 {
+  border-color: #d17606; /*#d10606;*/
+  background-color: #ffe4d4; /*#ffe4e4;*/
+}
+
+.status-icon-1 {
+  border-color: #acae00;
+  background-color: #fff700;
+}
+
+.status-icon-2 {
+  border-color: #7eb300;
+  background-color: #cdffb3;
+}
+
+.status-icon-3 {
+  border-color: #119801;
+  background-color: #94dc99;
+}
+
+
+.btn:focus, .btn:active, .btn.active {
+   outline: none !important;
+   box-shadow: 0 0 0 0 rgba(0,0,0,0) !important;
+}

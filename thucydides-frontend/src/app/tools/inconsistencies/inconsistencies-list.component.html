@@ -1,0 +1,48 @@
+<div *ngIf="isLoading; else notLoading">
+  <div class="alert alert-info">
+    Loading... (this may take a moment).
+  </div>
+</div>
+<ng-template #notLoading>
+  <div *ngIf="incs.error(); else elseEntry">
+
+    <div class="card">
+      <div class="card-body alert-danger">
+        {{incs.getErrorText()}}
+      </div>
+    </div>
+  </div>
+  <ng-template #elseEntry>
+    <div class="container mb-4">
+      <div class="row mb-2">
+        <div class="col-12">
+          <div *ngIf="incs.incList.length == 0; else elseEntry2">
+            <div class="card">
+              <div class="card-body alert-success">
+                There are no issues of this type in the database.
+              </div>
+            </div>
+          </div>
+          <ng-template #elseEntry2>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Lemma</th>
+                  <th>Issue</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let inc of incs.incList">
+                  <td><a routerLink="{{getEntryLink(inc[0])}}">{{inc[0]}}</a></td>
+                  <td>{{inc[1]}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+
+
+  </ng-template>
+</ng-template>

@@ -1,0 +1,13 @@
+h2 {
+  text-align: center;
+}
+
+.central-alert {
+  max-width: 600px;
+  margin: 10px auto;
+}
+
+.option-token-holder {
+  margin-right: 5px;
+  font-weight: bold;
+}

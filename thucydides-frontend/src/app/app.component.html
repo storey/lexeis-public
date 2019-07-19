@@ -1,0 +1,38 @@
+<!-- Issue report modal -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Report an Issue</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <report-issue [useLocation]="true"></report-issue>
+  </div>
+</ng-template>
+
+<!-- Main Content -->
+<div class="overall-container">
+  <div id="topbar" class="d-md-flex justify-content-between">
+    <div id="titleHolder">
+      <a routerLink="/">{{title}}</a>
+    </div>
+    <nav class="nav justify-content-md-end">
+      <a *ngFor="let navItem of navItems" class="nav-link" routerLink="{{navItem[0]}}" routerLinkActive="active">{{navItem[1]}}</a>
+    </nav>
+  </div>
+  <div id="contentContainer">
+    <div class="mainContainer">
+      <div class="{{mainContainer1}}">
+        <div class="{{mainContainer2}}">
+          <div class="{{mainContainer3}}">
+            <router-outlet></router-outlet>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="footer">
+    <a class="link-like" (click)="open(content)">Report An Issue</a>
+  </footer>
+</div>

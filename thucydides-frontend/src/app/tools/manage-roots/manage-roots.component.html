@@ -1,0 +1,24 @@
+<h2>Add a New Root</h2>
+<a routerLink="/tools/addRoot" class="btn btn-primary">Add a new root</a>
+
+<h2 class="mt-3">Choose a Root to Edit/Delete</h2>
+<p>
+  Select a root from the list below.
+</p>
+
+<hr/>
+
+<div *ngIf="isLoading; else notLoading">
+  <div class="alert alert-info">
+    Loading...
+  </div>
+</div>
+<ng-template #notLoading>
+  <mini-pagination [list]="roots" [page]="page" [basePath]="BASE_PATH">
+    <div class="list-group">
+      <a *ngFor="let r of roots.list" class="list-group-item list-group-item-action" routerLink="{{r.getEditLink()}}">
+        <span>{{r.name}}</span>
+      </a>
+    </div>
+  </mini-pagination>
+</ng-template>

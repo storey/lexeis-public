@@ -1,0 +1,73 @@
+<div class="d-flex flex-column">
+  <!-- Editing area -->
+  <div [ngClass]="getEditOrder()">
+    <div *ngIf="isEditable; else elseEditable">
+      <div *ngIf="showEditButton(); else elseEdit" class="col-12 mb-2">
+        <button (click)="activateEditing()" class="btn btn-primary" type="button">Edit Article</button>
+      </div>
+      <ng-template #elseEdit>
+        <div class="row mb-2">
+          <div class="col-12">
+            <span class="lemmaTitle">{{getEditTitle()}}</span>
+            <textarea [(ngModel)]="rawArticle" (keyup)="generatePreview($event)" #bodyInput id="article_body" class="form-control" placeholder="Article Draft" aria-label="Article Draft" rows="10"></textarea>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+    <ng-template #elseEditable>
+      <div *ngIf="showRaw" class="row mb-2">
+        <div class="col-12">
+          <span class="lemmaTitle">Raw Article</span>
+          <div class="card">
+            <div class="card-body">
+              {{rawArticle}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- Error display -->
+  <div class="order-2">
+    <div *ngIf="defHasProblem()" class="row mb-2">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <div *ngIf="defHasError()">
+              <span class="lemmaTitle text-danger">Errors:</span>
+              <ol>
+                <li *ngFor="let err of getArticleErrorText()">{{err}}</li>
+              </ol>
+            </div>
+            <div *ngIf="defHasWarning()">
+              <span class="lemmaTitle text-warning">Warnings:</span>
+              <ol>
+                <li *ngFor="let warn of getArticleWarningText()">{{warn}}</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Preview -->
+  <div [ngClass]="getPreviewOrder()">
+    <div class="row mb-2">
+      <div class="col-12">
+        <span class="lemmaTitle">{{getPreviewTitle()}}</span>
+        <div *ngIf="previewDef !== null">
+
+          <div class="card">
+            <div class="card-body">
+              <multi-definition [fullDefinition]="previewDef" [targetMeaning]="null"
+                [oldLongDefinition]="false" [token]="lemma"
+                [authorName]="''"></multi-definition>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

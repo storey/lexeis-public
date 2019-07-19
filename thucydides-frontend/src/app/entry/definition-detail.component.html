@@ -1,0 +1,34 @@
+<div *ngIf="myEntry.hasLongDefinition; else elseDefinition">
+  <multi-definition [fullDefinition]="myEntry.fullDefinition" [targetMeaning]="targetMeaning"
+    [oldLongDefinition]="myEntry.oldLongDefinition" [token]="myEntry.token"
+    [authorName]="myEntry.authorName"></multi-definition>
+</div>
+<ng-template #elseDefinition>
+  <p>
+    {{myEntry.shortDef}}
+  </p>
+</ng-template>
+
+<div class="entry-subsection-block" *ngIf="myEntry.semanticGroups.length > 0">
+  <span class="entry-subsection-title">{{semanticGroupsTitle()}}</span>
+  <div class="entry-subsection-body">
+    <semantic-group-badge *ngFor="let sg of myEntry.semanticGroups" [group]="sg"></semantic-group-badge>
+  </div>
+</div>
+
+<div *ngIf="myEntry.hasIllustration" class="entry-subsection-block">
+  <span class="entry-subsection-title">Illustration</span>
+  <div class="entry-subsection-body illustration-subsection-body">
+    <img src="assets/illustrations/{{myEntry.illustrationLink}}" alt="{{myEntry.illustrationAlt}}">
+    <p>{{myEntry.illustrationCaption}}</p>
+  </div>
+</div>
+
+<div *ngIf="myEntry.bibliographyText != ''" class="entry-subsection-block">
+  <span class="entry-subsection-title">Bibliography</span>
+  <div class="entry-subsection-body">
+    <ul class="bibliography-list">
+      <li *ngFor="let b of myEntry.bibliographyEntries">{{b}}</li>
+    </ul>
+  </div>
+</div>

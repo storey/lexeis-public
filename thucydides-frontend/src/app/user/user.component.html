@@ -1,0 +1,70 @@
+<h1 class="text-center">Welcome, {{loginInfo.firstName}}!</h1>
+
+<div class="row">
+  <div class="col-12" [ngClass]="{'col-md-6': hasEditorPermissions()}">
+    <div class="d-flex justify-content-center">
+      <div>
+        <h2 class="mt-2">User Actions:</h2>
+        <ul>
+          <li><a routerLink="/tools/reportIssue">Report an Issue.</a></li>
+          <li><a href="../user.php">Manage Lexeis Account.</a></li>
+          <li><a href="../logout.php">Logout.</a></li>
+        </ul>
+
+        <div *ngIf="hasContributorPermissions()">
+          <h2 class="mt-2">Contributor Tools:</h2>
+          <ul>
+            <li><a href="assets/guides/articleGuidelinesDecember_30_2018.docx">Article Guidelines.</a></li>
+            <li><a routerLink="/tools/articleBuilder">Article Builder.</a></li>
+            <li>
+              <a routerLink="/tools/assignedArticles">Articles Assigned to You.</a>
+              <span *ngIf="hasUserInfo()"> ({{info.assignedArticles}})</span>
+            </li>
+            <li><a routerLink="/tools/myDrafts">Your Completed Article Drafts.</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="hasEditorPermissions()" class="col-12 col-md-6">
+    <div class="d-flex justify-content-center">
+      <div>
+        <h2 class="mt-2">Editor Tools:</h2>
+        <ul>
+          <li>
+            <a routerLink="/tools/unwrittenArticles">Assign Unwritten Articles.</a>
+            <span *ngIf="hasUserInfo()"> ({{info.unwrittenArticles}})</span>
+          </li>
+          <li>
+            <a routerLink="/tools/submittedDrafts">Review Article Drafts.</a>
+            <span *ngIf="hasUserInfo()"> ({{info.unapprovedDrafts}})</span>
+          </li>
+          <li>
+            <a routerLink="/tools/reviewEntries">Proofread Lexicon Entries.</a>
+            <span *ngIf="hasUserInfo()"> ({{info.entriesToProofread}}, {{info.entriesToFinalize}})</span>
+          </li>
+          <li>
+            <a routerLink="/tools/reportedIssues">Reported Issues.</a>
+            <span *ngIf="hasUserInfo()"> ({{info.unresolvedIssues}})</span>
+          </li>
+          <li><a routerLink="/tools/inconsistencies">Lexicon Inconsistencies.</a></li>
+          <li><a routerLink="/tools/manageLemmata">Manage Lemmata.</a></li>
+          <li><a routerLink="/tools/manageAliases">Manage Aliases.</a></li>
+          <li><a routerLink="/tools/manageCompoundParts">Manage Compound Parts.</a></li>
+          <li><a routerLink="/tools/manageRoots">Manage Roots.</a></li>
+          <li><a routerLink="/tools/manageSemanticGroups">Manage Semantic Groups.</a></li>
+          <li><a routerLink="/tools/manageText">Manage Text.</a></li>
+        </ul>
+        <div *ngIf="hasAdminPermissions()">
+          <h2 class="mt-2">Admin Tools:</h2>
+          <ul>
+            <li><a routerLink="/tools/changelog">Change Log.</a></li>
+            <li><a routerLink="/tools/backupsOverview">Manage Backups.</a></li>
+            <li><a routerLink="/tools/export">Export Lexicon.</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

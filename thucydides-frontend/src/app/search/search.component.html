@@ -1,0 +1,44 @@
+<div class="input-group search-holder">
+  <input #searchInput (keyup.enter)="searchItem(searchInput.value)" type="text" id="search-bar" class="form-control" [placeholder]="getPlaceholder()" aria-label="Search for a word">
+  <span class="input-group-btn">
+    <button (click)="searchItem(searchInput.value)" class="search-button btn btn-secondary" type="button">Search</button>
+  </span>
+</div>
+<!-- helper info -->
+<div class="helper-holder">
+  <span class="link-like" (click)="toggleHelper()">How do I search?</span>
+  <div *ngIf="showHelper">
+    <p>
+      There are multiple ways to search for a word. You can use unicode (e.g. ἡγέομαι, χώρα), <a routerLink="/transcriptionGuide">Beta Code</a> (e.g. h(ge/omai, xw/ra), or <a routerLink="/transcriptionGuide">english transcription</a> (e.g. hegeomai, khora). You can optionally leave out breathing and accent marks (ηγεομαι, hgeomai). Make sure the form is not inflected.
+    </p>
+    <p>
+      If you are having trouble searching for a specific word, we suggest finding it in the <a routerLink="/text/">text</a> and clicking on the word to find the associated lemma.
+    </p>
+  </div>
+</div>
+<div *ngIf="isLoading">
+  <div class="alert alert-info" role="alert">
+    Loading...
+  </div>
+</div>
+<div *ngIf="searchError">
+  <div class="alert alert-danger" role="alert">
+    {{results[0].errorMessage()}}
+  </div>
+</div>
+<div *ngIf="emptySearch">
+  <div class="alert alert-danger" role="alert">
+    Please enter a value!
+  </div>
+</div>
+<div *ngIf="noResults">
+  <div class="alert alert-danger" role="alert">
+    Your search "{{previousSearch}}" did not match any known lemmas. Make sure it is not inflected! If you are having trouble finding a lemma, try going to the text and clicking on the word there.
+  </div>
+</div>
+<div *ngIf="oneAlias || manyResults">
+  <div *ngIf="manyResults" class="alert alert-primary" role="alert">
+    Multiple entries matched your search "{{previousSearch}}". Please refine the search or choose one of the matches below:
+  </div>
+  <lemma-list [entryList]="results" [linkDestination]="linkDestination"></lemma-list>
+</div>

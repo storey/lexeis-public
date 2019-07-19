@@ -1,0 +1,48 @@
+.search-button {
+  cursor:pointer;
+}
+
+.search-holder {
+  margin-bottom: 2px;
+}
+
+.helper-holder {
+  margin-bottom: 15px;
+  margin-left: 15px;
+}
+
+.helper-holder span {
+  font-size: 12px;
+}
+
+.helper-holder div {
+  font-size: 14px;
+}
+
+.link-like {
+  color: #007bff;
+  cursor: pointer;
+}
+
+.link-like:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+
+/* Make sure we don't get weird outlines */
+.btn:focus,.btn:active {
+   outline: none !important;
+}
+
+.mainContainer .form-control:focus {
+  box-shadow: none;
+}
+
+.btn:focus,.btn:active {
+    box-shadow: none !important;
+}
+
+.alert {
+  margin: 0px 10px 15px 10px;
+}

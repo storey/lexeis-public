@@ -1,0 +1,21 @@
+/* styling for subsections in the definition detail */
+.entry-subsection-block:first {
+  margin-top: 0px;
+}
+
+.entry-subsection-block {
+  margin-top: 15px;
+}
+
+.entry-subsection-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.illustration-subsection-body {
+  overflow-x: auto;
+}
+
+.bibliography-list {
+  list-style-type: disc;
+}

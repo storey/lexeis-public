@@ -1,0 +1,33 @@
+<h1>Recompile All Texts</h1>
+<p>
+  If the prepared texts get out of sync with the database for some reason,
+  you can recompile them all from here.
+</p>
+<p>
+  <em>Note: this will take a while.</em>
+</p>
+
+
+<div *ngIf="!loadingResult; else elseSubmit">
+  <div *ngIf="report.error();">
+    <div class="alert alert-danger">
+      {{report.getErrorText()}}
+    </div>
+  </div>
+  <div *ngIf="report.isSuccess();">
+    <div class="alert alert-success">
+      {{report.getErrorText()}}
+    </div>
+  </div>
+  <p>
+    <button type="submit" class="btn btn-primary" (click)="clickRecompile()">Recompile</button>
+  </p>
+</div>
+<ng-template #elseSubmit>
+  <p>
+    <button class="btn btn-primary" disabled>Recompiling...</button>
+  </p>
+  <p>
+    <ngb-progressbar type="info" [value]="progress" [striped]="true" [animated]="true" [height]="'30px'"><i>{{progress}}%</i></ngb-progressbar>
+  </p>
+</ng-template>

@@ -1,0 +1,58 @@
+<h2>Review Lexicon Entries</h2>
+
+<div *ngIf="isLoading; else notLoading">
+  <div class="alert alert-info">
+    Loading...
+  </div>
+</div>
+<ng-template #notLoading>
+  <div *ngIf="info.error(); else elseEntry">
+
+    <div class="card">
+      <div class="card-body alert-danger">
+        {{info.getErrorText()}}
+      </div>
+    </div>
+  </div>
+  <ng-template #elseEntry>
+    <p>
+      Below is a list of entries that still need to be proofread before they are
+      considered finished. To review the entry, click the associated link below,
+      proofread the entry, then click the colored circle next to the lemma at
+      the top. This will open a popover that allows you to mark the entry as
+      proofread.
+    </p>
+
+    <h3>Entries to be Proofread</h3>
+    <p>
+      These entries need to be proofread for the first time. In particular, make
+      sure that the root, compound parts, and long definition are correct and typo-free.
+    </p>
+    <p *ngIf="info.proofList.length == 0" class="font-italic">
+      There are no entries to proofread at this time.
+    </p>
+    <ul>
+      <li *ngFor="let lemma of info.proofList">
+        <a href="#/{{getEntryLink(lemma)}}"  target="_blank">{{lemma}}</a>
+      </li>
+      <li *ngIf="info.numToProof > 0">... and {{info.numToProof}} more.</li>
+    </ul>
+
+    <h3>Entries to be Finalized</h3>
+    <p>
+      These entries need another proofreading pass before being finalized.
+      Ideally this person will be different from the person who proofread the
+      article the first time.
+    </p>
+    <p *ngIf="info.finalizeList.length == 0" class="font-italic">
+      There are no entries to finalize at this time.
+    </p>
+    <ul>
+      <li *ngFor="let lemma of info.finalizeList">
+        <a href="#/{{getEntryLink(lemma)}}"  target="_blank">{{lemma}}</a>
+      </li>
+      <li *ngIf="info.numToFinalize > 0">... and {{info.numToFinalize}} more.</li>
+    </ul>
+
+  </ng-template>
+</ng-template>

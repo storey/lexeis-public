@@ -1,0 +1,222 @@
+/* Global Styles */
+
+body {
+  background-color: #ebf5ff;
+  color: #1f3340;
+}
+
+/* for holding ng-busy containers */
+.busy-holder {
+  position: relative;
+  z-2ex: 1;
+}
+
+/* For text display */
+.section-title {
+  color: #1f3340 !important;
+}
+
+.textDisplay a{
+  color: #1f3340;
+  text-decoration-color: inherit;
+}
+
+.textDisplay a:hover{
+  color: #1f3340;
+  text-decoration-color: #1f3340;
+}
+
+
+.sectionLabel {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.target-lemma {
+  font-weight: bold;
+  /* color: #28a745!important; */
+  background-color: #F0E442;
+}
+
+
+/*
+666666
+9acd32
+bebe00
+ca8cd2
+*/
+
+.context-x {
+  color: #aaaaaa;
+}
+
+.context-x a {
+  color: #aaaaaa !important;
+}
+
+
+/* Background color to show context */
+.show-context-bg .context-0 {
+  background-color: white;
+}
+
+.show-context-bg .context-1 {
+  background-color: #e69f0060;
+}
+
+.show-context-bg .context-2 {
+  background-color: #009e7360;
+}
+
+.show-context-bg .context-3 {
+  background-color: #cc79a760;
+}
+
+/* Text color to show context */
+.show-context-c .context-0 a {
+  color: #666666;
+}
+
+.show-context-c .context-1 a {
+  color: #e69f00;
+}
+
+.show-context-c .context-2 a {
+  color: #009e73;
+}
+
+.show-context-c .context-3 a {
+  color: #cc79a7;
+}
+
+
+/* Underline to show context */
+.show-context-ul .context-0 {
+  text-decoration: underline;
+  text-decoration-color: #999999;
+}
+
+.show-context-ul .context-1 {
+  text-decoration: underline;
+  text-decoration-color: #e69f00;
+}
+
+.show-context-ul .context-2 {
+  text-decoration: underline;
+  text-decoration-color: #009e73;
+}
+
+.show-context-ul .context-3 {
+  text-decoration: underline;
+  text-decoration-color: #cc79a7;
+}
+
+
+/* Bracket to show context */
+/* .context-0::before, .context-0::after {
+  color: #999999;
+}
+
+.context-1::before, .context-1::after {
+  color: #9acd32;
+}
+
+.context-2::before, .context-2::after {
+  color: #ffff00;
+}
+
+.context-3::before, .context-3::after {
+  color: #ca8cd2;
+}
+
+.context-0::before, .context-1::before, .context-2::before, .context-3::before {
+  content: "<";
+}
+
+.context-0::after, .context-1::after, .context-2::after, .context-3::after {
+  content: ">";
+}
+
+.context-0::before, .context-1::before, .context-2::before, .context-3::before, .context-0::after, .context-1::after, .context-2::after, .context-3::after {
+  font-size: 24px;
+  font-weight: bold;
+  text-decoration: none;
+} */
+
+
+/* --------- Pagination styling -------- */
+
+/* Properly center pagination */
+.my-pagination .ngx-pagination {
+  padding-left: 0px;
+}
+
+/* make them like bootstrap */
+.my-pagination .ngx-pagination {
+  display: -ms-flexbox;
+  display: flex;
+  padding-left: 0;
+  list-style: none;
+  border-radius: .25rem;
+}
+
+.my-pagination .ngx-pagination li a,
+.my-pagination .ngx-pagination li div,
+.my-pagination .ngx-pagination li.current,
+.my-pagination .ngx-pagination li.disabled {
+  position: relative;
+  display: block;
+  padding: .5rem .75rem;
+  margin-left: -2px;
+  line-height: 1.25;
+  color: #007bff;
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+.my-pagination .ngx-pagination li:first-child a,
+.my-pagination .ngx-pagination li:first-child div,
+.my-pagination .ngx-pagination li.disabled:first-child {
+  margin-left: 0;
+  border-top-left-radius: .25rem;
+  border-bottom-left-radius: .25rem;
+}
+.my-pagination .ngx-pagination li:last-child a,
+.my-pagination .ngx-pagination li:last-child div,
+.my-pagination .ngx-pagination li.disabled:last-child {
+  border-top-right-radius: .25rem;
+  border-bottom-right-radius: .25rem;
+}
+
+.my-pagination .ngx-pagination li a:hover,
+.my-pagination .ngx-pagination li div:hover{
+  color: #0056b3;
+  text-decoration: none;
+  background-color: #e9ecef;
+  border-color: #ddd;
+}
+
+.my-pagination .ngx-pagination li.disabled {
+  color: #868e96;
+  pointer-events: none;
+  background-color: #fff;
+  border-color: #ddd;
+}
+
+.my-pagination .ngx-pagination li.current {
+  z-2ex: 1;
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.link-like {
+  color: #007bff !important;
+  text-decoration: none;
+  background-color: transparent;
+  cursor: pointer !important;
+}
+
+.link-like:hover {
+  color: #0056b3 !important;
+  text-decoration: underline !important;
+}

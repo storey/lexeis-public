@@ -1,0 +1,47 @@
+<div class="mainSidebar h-100">
+  <div class="sidebarSection">
+    <h3 class="sidebarSectionTitle">Group By</h3>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="btn-group standardSelector" role="group" aria-label="Group By">
+          <a *ngFor="let d of displayTypes" [routerLink]="getRouterLink(d)" class="btn" [ngClass]="getTypeClasses(d)">{{d}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sidebarSection">
+    <h3 class="sidebarSectionTitle">Jump to {{getDisplayType()}}</h3>
+    <div class="jump-input-holder">
+      <section-jump [displayType]="displayType" [baseURL]="'/text/'" [useDots]="true"></section-jump>
+    </div>
+  </div>
+  <div class="sidebarSection">
+    <h3 class="sidebarSectionTitle">Context Highlighting:</h3>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="btn-group standardSelector" role="group" aria-label="Context Highlighting">
+          <a *ngFor="let cd of contextDisplayTypes" class="btn" [ngClass]="getContextTypeClasses(cd)" (click)="setContextDisplayType(cd)">{{cd[0]}}</a>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="contextDisplayType!==''" class="container text-center" [ngClass]="getContextDisplayClass()">
+      <ul class="bareList mt-2 contextPreview">
+        <li *ngFor="let c of contexts; index as i"><span class="context-{{i}}"><a>{{c}}</a></span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="sidebarSection">
+    <h3 class="sidebarSectionTitle">Browse {{getDisplayType()}}s</h3>
+    <div class="browse-container">
+      <sections-browse [displayType]="displayType" [openSet]="locationSpec" [level]="0"></sections-browse>
+    </div>
+  </div>
+  <div *ngIf="contextDisplayType!=='' && isTopDisplayType()" class="sidebarSection colorKey" [class.fixedColorKey]="scrolledDown">
+    <h3 class="sidebarSectionTitle">Context</h3>
+    <div class="container text-center" [ngClass]="getContextDisplayClass()">
+      <ul class="bareList mt-2 contextPreview">
+        <li *ngFor="let c of contexts; index as i"><span class="context-{{i}}"><a>{{c}}</a></span></li>
+      </ul>
+    </div>
+  </div>
+</div>

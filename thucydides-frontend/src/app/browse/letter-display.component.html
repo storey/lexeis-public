@@ -1,0 +1,12 @@
+<div>
+  <div class="set-title mb-1">{{label}}:</div>
+  <div *ngFor="let alphabetSet of alphabets" [ngClass]="alphabetSet['class']">
+    <nav *ngFor="let set of alphabetSet['set']" attr.aria-label="{{label}}">
+      <div class="pagination justify-content-center">
+        <div *ngFor="let a of set" class="page-item" [ngClass]="{'active': a.active}">
+          <a class="page-link narrow-page-link" [routerLink]="a.link">{{a.text}}</a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>

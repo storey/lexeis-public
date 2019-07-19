@@ -1,0 +1,29 @@
+<div *ngIf="isLoading; else notLoading">
+  <div class="alert alert-info">
+    Loading...
+  </div>
+</div>
+<ng-template #notLoading>
+  <mini-pagination [list]="articles" [page]="page" [basePath]="BASE_PATH">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>User Who Made Changes<br/><div class="limited-small">(Sometimes a user makes small changes but wants the original author to stay the same)</div></th>
+          <th>Article Author</th>
+          <th>Lemma</th>
+          <th *ngIf="userArticles">Status</th>
+          <th>View</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let article of articles.list" [ngClass]="article.getRowClasses()">
+          <td>{{article["articleModifier"]}}</td>
+          <td>{{article["author"]}}</td>
+          <td>{{article["lemma"]}}</td>
+          <td *ngIf="userArticles">{{article.getArticleStatusName()}}</td>
+          <td><a routerLink="{{article.getArticleLink()}}" class="btn btn-sm btn-light">View</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </mini-pagination>
+</ng-template>

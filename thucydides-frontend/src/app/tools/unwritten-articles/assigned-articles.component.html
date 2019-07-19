@@ -1,0 +1,33 @@
+<h2>Your Assigned Articles</h2>
+<p>
+  This shows the list of articles assigned to you.
+</p>
+<hr/>
+
+<div *ngIf="isLoading; else notLoading">
+  <div class="alert alert-info">
+    Loading...
+  </div>
+</div>
+<ng-template #notLoading>
+  <mini-pagination [list]="articles" [page]="page" [basePath]="BASE_PATH">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Has Betant Definition</th>
+          <th>Lemma</th>
+          <th>Draft Submitted?</th>
+          <th>Article Builder</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let article of articles.list; let ind = index">
+          <td>{{boolToEnglish(article.hasOld)}}</td>
+          <td>{{article["lemma"]}}</td>
+          <td>{{boolToEnglish(article.draftSubmitted)}}</td>
+          <td><a routerLink="{{article.getArticleBuilderLink()}}" class="btn btn-sm btn-light">Article Builder</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </mini-pagination>
+</ng-template>

@@ -1,0 +1,16 @@
+.credit-footer {
+  margin-top: 50px;
+  margin-left: 15px;
+  text-align: right;
+  font-size: 13px;
+}
+
+.sidebar-holder {
+  flex-grow: 0;
+  order: 0;
+}
+
+.text-holder {
+  flex-grow: 1;
+  order: 1;
+}

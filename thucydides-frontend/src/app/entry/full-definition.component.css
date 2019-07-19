@@ -1,0 +1,50 @@
+p {
+  margin-bottom: 0.5rem;
+}
+
+/* set proper list counting type (Roman upper, Alphabetic upper, Arabic numerals) */
+ol {
+  padding-left: 30px;
+}
+
+ol li {
+  list-style-type: upper-roman;
+}
+
+ol ol li {
+  list-style-type: upper-alpha;
+}
+
+ol ol ol li {
+  list-style-type: decimal;
+}
+
+.target-meaning {
+  font-weight: bold;
+  /* color: #28a745!important; */
+  /* background-color: #F0E442; */
+}
+
+.keyPassageGreek {
+  font-style: italic;
+}
+
+.keyPassageList {
+  list-style-type: none !important;
+  padding: 0px;
+  margin: 0px;
+  padding-left: 5px;
+}
+
+.keyPassageList li {
+  list-style-type: none !important;
+}
+
+.keyPassageTitle {
+  font-weight: bold;
+}
+
+.keyPassagesHolder {
+    margin-top: -.5rem;
+    margin-bottom: 1rem;
+}

@@ -1,0 +1,35 @@
+<h1>Add New Alias</h1>
+
+<form id="aliasForm" (ngSubmit)="onSubmit(aliasForm)" novalidate #aliasForm="ngForm">
+  <div class="form-group">
+    <label for="alias">Alias:</label>
+    <input [(ngModel)]="alias" type="text" name="alias" class="form-control" id="alias" placeholder="Enter the Alias" maxlength="64" required />
+    <small class="form-text text-muted">The alias should be in unicode, e.g. "βουλεύω".</small>
+    <div class="invalid-feedback">
+      Please include an alias.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="lemma">Lemma:</label>
+    <input [(ngModel)]="lemma" type="text" name="lemma" class="form-control" id="lemma" placeholder="Enter the Lemma" maxlength="64" required />
+    <small class="form-text text-muted">The lemma should be in unicode, e.g. "βουλεύω".</small>
+    <div class="invalid-feedback">
+      Please include a lemma.
+    </div>
+  </div>
+
+  <!-- Submission error -->
+  <div *ngIf="report.error()">
+    <div class="alert alert-danger">
+      {{report.getErrorText()}}
+    </div>
+  </div>
+  <!-- Submit -->
+  <div *ngIf="!loadingReport; else elseSubmit">
+    <button type="submit" class="btn btn-primary">Create Alias</button>
+  </div>
+  <ng-template #elseSubmit>
+    <button class="btn btn-primary" disabled>Creating Alias...</button>
+  </ng-template>
+</form>

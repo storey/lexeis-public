@@ -1,0 +1,13 @@
+h1, h2 {
+  text-align: center;
+}
+
+p {
+  text-align: center;
+}
+
+.section-jump-holder {
+  max-width: 400px;
+  width: 400px;
+  margin: 0px auto;
+}

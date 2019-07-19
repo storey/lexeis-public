@@ -1,0 +1,52 @@
+<h2>Reported Issues</h2>
+<p>
+  View issues reported by users.
+</p>
+
+<hr/>
+
+<div class="row mb-2">
+  <div class="col-12 d-flex justify-content-center">
+    <div>
+      <span class="mr-2"> Show resolved issues?</span>
+      <div class="btn-group btn-group-toggle" name="radioBasic">
+        <label [ngClass]="getResolvedRadioClass(false)" (click)="setShowResolved(false)">
+          <input type="radio" class="invisible-radio" [value]="false"> No
+        </label>
+        <label [ngClass]="getResolvedRadioClass(true)" (click)="setShowResolved(true)">
+          <input type="radio" class="invisible-radio" [value]="true"> Yes
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr/>
+
+<div *ngIf="isLoading; else notLoading">
+  <div class="alert alert-info">
+    Loading...
+  </div>
+</div>
+<ng-template #notLoading>
+  <mini-pagination [list]="issues" [page]="page" [basePath]="basePath">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Resolved?</th>
+          <th>Comment</th>
+          <th>View</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let issue of issues.list" [ngClass]="issue.getRowClasses()">
+          <td>{{issue["email"]}} <span class="font-italic" *ngIf="!issue['is_user']">(Unregistered)</span></td>
+          <td>{{getResolvedText(issue["resolved"])}}</td>
+          <td>{{clipComment(issue["comment"])}}</td>
+          <td><a routerLink="{{issue.getIssueLink()}}" class="btn btn-sm btn-light">View</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </mini-pagination>
+</ng-template>

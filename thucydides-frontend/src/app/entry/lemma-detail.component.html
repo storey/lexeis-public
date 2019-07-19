@@ -1,0 +1,45 @@
+<div class="row">
+  <div class="col-12 col-sm-6 mt-1">
+    <div class="mt-4">
+      <span class="lemma-info-name">Part of Speech:</span> {{myEntry.partOfSpeech}}
+    </div>
+    <div class="mt-1">
+      <span class="lemma-info-name">Root: </span>
+      <span *ngIf="myEntry.stemType.length == 0; else elseStem">None.</span>
+      <ng-template #elseStem>
+        <span *ngFor="let s of myEntry.stemType; last as isLast"><a routerLink="/rootGroup/{{s}}">{{s}}</a><span *ngIf=!isLast>, </span></span>
+      </ng-template>
+    </div>
+    <div class="mt-1">
+      <span class="lemma-info-name">Compound Parts: </span>
+      <span *ngIf="myEntry.compoundParts.length == 0; else elseCompounds">None.</span>
+      <ng-template #elseCompounds>
+        <span *ngFor="let c of myEntry.compoundParts; last as isLast"><a routerLink="/compound/{{c}}">{{c}}</a><span *ngIf=!isLast>, </span></span>
+      </ng-template>
+    </div>
+    <div class="mt-1">
+      <span class="lemma-info-name">Word Frequency:</span> {{myEntry.frequency.all}}
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 mt-1">
+    <table class="table table-sm mb-1">
+      <thead>
+        <tr>
+          <th scope="col">Context:</th>
+          <th scope="col" class="text-right">Frequency:</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of getContextList(); index as i">
+          <th scope="row">{{c}}:</th>
+          <td class="text-right">{{myEntry.frequency.contexts[i]}}</td>
+        </tr>
+        <tr *ngIf="contexts.length > 4" class="show-hide-table">
+          <td colspan="2">
+            <a class="link-like" (click)="toggleTable()">{{showTableText}}</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

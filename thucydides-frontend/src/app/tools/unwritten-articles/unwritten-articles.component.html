@@ -1,0 +1,147 @@
+<!-- Assign modal -->
+<ng-template #assign let-modal>
+  <div class="alert alert-warning mb-0">
+    Are you sure you want to assign {{this.selectedArticles.length}} articles to {{this.assigneeName}}?
+  </div>
+  <div class="modal-footer pt-2 pb-2">
+    <button type="button" class="btn btn-outline-primary" (click)="modal.close(false)">No</button>
+    <button type="button" class="btn btn-success" (click)="modal.close(true)">Yes</button>
+  </div>
+</ng-template>
+
+<h2>Unwritten Articles</h2>
+<p>
+  This shows the list of articles that still need to be written.
+</p>
+<hr/>
+
+<div class="row mb-2">
+  <div class="col-12 d-flex justify-content-center">
+    <div>
+      <span class="mr-2"> Types of unwritten articles to view: </span>
+      <div class="btn-group btn-group-toggle" name="radioBasic">
+        <label [ngClass]="getAssignedRadioClass(false)" (click)="setShowAssigned(false)">
+          <input type="radio" class="invisible-radio" [value]="false"> Unassigned
+        </label>
+        <label [ngClass]="getAssignedRadioClass(true)" (click)="setShowAssigned(true)">
+          <input type="radio" class="invisible-radio" [value]="true"> Assigned
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr/>
+
+
+
+<!-- For filtering text -->
+<div *ngIf="!isLoadingInfo" class="row mb-2">
+  <div *ngIf="pageInfo.error(); else elseInfo">
+
+    <div *ngIf="pageInfo.error()" class="card">
+      <div class="card-body alert-danger">
+        {{pageInfo.errorMessage()}}
+      </div>
+    </div>
+  </div>
+  <ng-template #elseInfo>
+    <div class="col-12 text-center">
+      <h2>Filter By</h2>
+    </div>
+      <div class="col-12 d-flex justify-content-center text-center">
+        <div>
+          <label for="rootGroup">Root: </label>
+          <select class="form-control" id="rootGroup" name="rootGroup" [(ngModel)]="rootID" (ngModelChange)="refreshArticles()">
+            <option *ngFor="let rg of pageInfo.rootGroups" value="{{rg.id}}">{{rg.name}}</option>
+          </select>
+        </div>
+        <div class="ml-2">
+          <label for="semanticGroup">Semantic Group: </label>
+          <select class="form-control" id="semanticGroup" name="semanticGroup" [(ngModel)]="semanticID" (ngModelChange)="refreshArticles()">
+            <option *ngFor="let sg of pageInfo.semanticGroups" value="{{sg.id}}">{{sg.name}}</option>
+          </select>
+        </div>
+        <div class="ml-2">
+          <label for="freqSelect">Frequency: </label>
+          <select class="form-control" id="freqSelect" name="frequency" [(ngModel)]="freqID" (ngModelChange)="refreshArticles()">
+            <option value="-1">All</option>
+            <option value="0">25+ Occurrences</option>
+            <option value="1">5-24 Occurrences</option>
+            <option value="2">2-4 Occurrences</option>
+            <option value="3">1 Occurrence</option>
+          </select>
+        </div>
+      </div>
+    </ng-template>
+</div>
+<hr/>
+
+<div *ngIf="isLoadingList || isLoadingInfo; else notLoading">
+  <div class="alert alert-info">
+    Loading...
+  </div>
+</div>
+<ng-template #notLoading>
+  <mini-pagination [list]="articles" [page]="page" [basePath]="BASE_PATH">
+    <table class="table table-striped text-center">
+      <thead>
+        <tr>
+          <th class="text-center"> <input type="checkbox" (click)="selectAll()" [checked]="allSelected"/> Select</th>
+          <th *ngIf="show_assigned">Assigned To</th>
+          <th>Has Betant Definition</th>
+          <th>Lemma</th>
+          <th>Semantic Group</th>
+          <th>Root</th>
+          <th>Occurrences</th>
+          <th>View</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let article of articles.list; let ind = index" [ngClass]="article.rowClass()">
+          <td class="text-center">
+              <input type="checkbox" (click)="selectArticle(article)" [checked]="article.checked"/>
+          </td>
+          <td *ngIf="show_assigned">{{article.assigned}}</td>
+          <td>{{getAssignedText(article.hasOld)}}</td>
+          <td>{{article.lemma}}</td>
+          <td>
+            <div *ngFor="let sg of article.semanticGroups">
+              <semantic-group-badge [group]="sg"></semantic-group-badge>
+            </div>
+          </td>
+          <td><span *ngFor="let s of article.root; last as isLast"><a routerLink="/rootGroup/{{s}}">{{s}}</a><span *ngIf=!isLast>, </span></span></td>
+          <td>{{article.freq}}</td>
+          <td><a routerLink="{{article.getArticleLink()}}" class="btn btn-sm btn-light">View</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <hr/>
+
+    <div class="row mb-2">
+      <div class="col-12 d-flex justify-content-center">
+        <div *ngIf="report.error()">
+          <div class="card mb-2">
+            <div class="card-body alert-danger">
+              {{report.getErrorText()}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 d-flex justify-content-center">
+        <form id="assigneeForm" (ngSubmit)="onSubmit(assigneeForm, assign)" novalidate #assigneeForm="ngForm">
+          <div class="form-group">
+            <label for="assigneeSelect">Assign Selected Articles To: </label>
+            <select class="form-control" id="assigneeSelect" name="assignee" [(ngModel)]="assignee">
+              <option *ngFor="let c of pageInfo.contributors" value="{{c.id}}">{{c.name}}</option>
+            </select>
+          </div>
+          <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary" [disabled]="noArticlesSelected()">Assign</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </mini-pagination>
+</ng-template>

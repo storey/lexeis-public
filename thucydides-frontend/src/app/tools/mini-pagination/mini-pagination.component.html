@@ -1,0 +1,30 @@
+<div *ngIf="list.error(); else elseEntry">
+  <div class="card-body alert-danger">
+    {{list.getErrorText()}} <a *ngIf="list.size > 0" routerLink="{{basePath}}0">Click here to go to first {{itemName}} page.</a>
+  </div>
+</div>
+<ng-template #elseEntry>
+  <div class="container mb-4">
+    <div class="row mb-2">
+      <div class="col-12">
+        <h3 class="text-center">{{getTitle()}}</h3>
+      </div>
+    </div>
+    <div *ngIf="list.size > list.perPage" class="row mb-2">
+      <div class="col-12 d-flex justify-content-center">
+        <div>
+          <a class="btn btn-outline-primary btn-sm mr-2" routerLink="{{getFirstPageLink()}}" [ngClass]="{'disabled': onFirstPage()}">First</a>
+          <a class="btn btn-outline-primary btn-sm mr-3" routerLink="{{getPrevPageLink()}}" [ngClass]="{'disabled': onFirstPage()}">Prev</a>
+          <a class="btn btn-outline-primary btn-sm mr-2" routerLink="{{getNextPageLink()}}" [ngClass]="{'disabled': onLastPage()}">Next</a>
+          <a class="btn btn-outline-primary btn-sm" routerLink="{{getLastPageLink()}}" [ngClass]="{'disabled': onLastPage()}">Last</a>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-12">
+        <ng-content></ng-content>
+      </div>
+    </div>
+  </div>
+
+</ng-template>

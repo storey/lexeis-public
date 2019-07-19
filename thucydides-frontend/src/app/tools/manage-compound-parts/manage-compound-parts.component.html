@@ -1,0 +1,24 @@
+<h2>Add a New Compound</h2>
+<a routerLink="/tools/addCompoundPart" class="btn btn-primary">Add a new compound part</a>
+
+<h2 class="mt-3">Choose a Compound to Edit/Delete</h2>
+<p>
+  Select a compound part from the list below.
+</p>
+
+<hr/>
+
+<div *ngIf="isLoading; else notLoading">
+  <div class="alert alert-info">
+    Loading...
+  </div>
+</div>
+<ng-template #notLoading>
+  <mini-pagination [list]="compounds" [page]="page" [basePath]="BASE_PATH">
+    <div class="list-group">
+      <a *ngFor="let c of compounds.list" class="list-group-item list-group-item-action" routerLink="{{c.getEditLink()}}">
+        <span>{{c.name}}</span>
+      </a>
+    </div>
+  </mini-pagination>
+</ng-template>

@@ -1,0 +1,73 @@
+<!-- Restore confirmation modal -->
+<ng-template #confirm let-modal>
+  <div class="alert alert-warning mb-0">
+    Are you sure you want to restore backup "{{targetBackup.filename}}"?
+    <span class="font-weight-bold">This will overwrite all changes made since this
+    backup.</span> <span class="font-italic"> You should only do this if
+    something really major went wrong and you need to restore a recent fixed
+    state. </span>
+  </div>
+  <div *ngIf="restoreReport.error()" class="alert alert-danger mb-0">
+    {{restoreReport.getErrorText()}}
+  </div>
+
+  <div *ngIf="restoreReport.isSuccess()" class="alert alert-success mb-0">
+    {{restoreReport.getErrorText()}} <strong>MAKE SURE</strong> you recompile the
+    prepared texts to ensure everything is consistent.
+  </div>
+  <div class="modal-footer pt-2 pb-2">
+    <button *ngIf="!loadingRestoreResult && !restoreReport.isSuccess()" type="button" class="btn btn-outline-primary" (click)="modal.close(false)">Cancel</button>
+    <button *ngIf="!loadingRestoreResult && !restoreReport.isSuccess()" type="button" class="btn btn-danger" (click)="tryRestore()">Restore</button>
+    <button *ngIf="loadingRestoreResult" type="button" class="btn btn-danger" disabled="true">Restoring... (this may take a few minutes)</button>
+    <button *ngIf="!loadingRestoreResult && restoreReport.isSuccess()" type="button" class="btn btn-success" (click)="modal.close(true)">Okay</button>
+  </div>
+</ng-template>
+
+
+<h1>Manage Backups</h1>
+<p>
+  Make new backups or load old ones.
+</p>
+<h2>Make New Backup</h2>
+<p>
+  <em>Note: this may take a few moments.</em>
+</p>
+<div *ngIf="backupReport.error();">
+  <div class="alert alert-danger">
+    {{backupReport.getErrorText()}}
+  </div>
+</div>
+<div *ngIf="backupReport.isSuccess();">
+  <div class="alert alert-success">
+    {{backupReport.getErrorText()}}
+  </div>
+</div>
+<div>
+  <p *ngIf="!loadingBackupResult; else elseSubmit">
+    <button type="submit" class="btn btn-primary" (click)="newBackup()">Create New Backup</button>
+  </p>
+  <ng-template #elseSubmit>
+    <p>
+      <button class="btn btn-primary" disabled>Backing Up...</button>
+    </p>
+  </ng-template>
+</div>
+<hr/>
+<h2>Load Existing Backup</h2>
+<p>
+  <em>Click a backup in the list below to restore that state.</em>
+</p>
+<div *ngIf="loadingBackups; else notLoading">
+  <div class="alert alert-info">
+    Loading...
+  </div>
+</div>
+<ng-template #notLoading>
+  <mini-pagination [list]="backups" [page]="page" [basePath]="BASE_PATH">
+    <div class="list-group">
+      <a *ngFor="let b of backups.list" class="list-group-item list-group-item-action" (click)="confirmRestore(b, confirm)">
+        Backup from <span class="font-weight-bold">{{b.timestamp}}</span> (GMT)
+      </a>
+    </div>
+  </mini-pagination>
+</ng-template>

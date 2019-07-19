@@ -1,0 +1,10 @@
+.btn:focus, .btn:active, .btn.active {
+   outline: none !important;
+   box-shadow: 0 0 0 0 rgba(0,0,0,0) !important;
+}
+
+.invisible-radio {
+  position: absolute;
+  clip: rect(0,0,0,0);
+  pointer-events: none;
+}

@@ -1,0 +1,45 @@
+<div class="row">
+  <div class="col-12 no-gutters title-navigator">
+    <nav aria-label="Text Navigation">
+      <ul class="pagination pagination-lg justify-content-center">
+        <li class="page-item" [ngClass]="{'disabled': getPrevPath()==''}">
+          <a class="page-link" routerLink="/text/{{getPrevPath()}}" aria-label="previous" tabindex="-1">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+          </a>
+        </li>
+        <li class="page-item disabled">
+          <span class="page-link section-title">{{getTextTitle()}}</span>
+        </li>
+        <li class="page-item" [ngClass]="{'disabled': getNextPath()==''}">
+          <a class="page-link" routerLink="/text/{{getNextPath()}}" aria-label="next" tabindex="-1">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+<div class="text-holder">
+  <div *ngIf="isLoading; else elseGroup">
+    <div class="alert alert-info central-alert">
+      Loading...
+    </div>
+  </div>
+  <ng-template #elseGroup>
+    <div *ngIf="displayText.isError(); else elseGroup2">
+      <div class="alert alert-danger central-alert">
+        {{displayText.getErrorText()}}
+      </div>
+    </div>
+    <ng-template #elseGroup2>
+      <div class="busy-holder">
+        <div [ngBusy]="{busy: busy, message: 'Loading...', delay: 10, wrapperClass: 'ng-busy ng-busy-left'}">
+          <div class="textDisplay" [innerHTML]="getTextHTML()" [ngClass]="contextDisplayType"></div>
+        </div>
+      </div>
+    </ng-template>
+
+  </ng-template>
+</div>

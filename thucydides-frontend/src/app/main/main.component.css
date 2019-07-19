@@ -1,0 +1,42 @@
+h2 {
+  text-align: center;
+}
+
+.search-button {
+  cursor:pointer;
+}
+
+.search-holder {
+  margin-bottom: 15px;
+}
+
+
+/* Make sure we don't get weird outlines */
+.btn:focus,.btn:active {
+   outline: none !important;
+}
+
+.mainContainer .form-control:focus {
+  box-shadow: none;
+}
+
+.btn:focus,.btn:active {
+    box-shadow: none !important;
+}
+
+.alert {
+  margin: 0px 10px 15px 10px;
+}
+
+.card-deck {
+  margin-bottom: 10px;
+}
+
+.card-deck .card {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.card-deck:last-child {
+  margin-bottom: 0px;
+}

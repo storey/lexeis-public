@@ -1,0 +1,19 @@
+<!-- chose between multiple definition options -->
+<div *ngIf="fullDefinition.length > 1" class="d-flex justify-content-center bd-highlight mb-2">
+  <div>
+    <span class="occurrence-order-label">View: </span>
+    <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioDefinition" [(ngModel)]="definitionIndex">
+      <label ngbButtonLabel class="btn btn-outline-primary" *ngFor="let def of fullDefinition; index as d">
+        <input ngbButton type="radio" [value]="d"> {{getDefTitle(d, def)}}
+      </label>
+    </div>
+  </div>
+</div>
+<div *ngIf="oldLongDefinition" class="font-italic">
+  {{old_dict_ref}}
+</div>
+<full-definition-display [myDef]="fullDefinition[definitionIndex]"
+  [lemma]="token" [targetMeaning]="targetMeaning" [isMain]="definitionIndex === 0"></full-definition-display>
+<p class="text-md-right">
+  <small *ngIf="authorName != ''">Article by <strong>{{authorName}}</strong>.</small>
+</p>

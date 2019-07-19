@@ -1,0 +1,103 @@
+<!-- Accept modal -->
+<ng-template #accept let-modal>
+  <div *ngIf="hasEditorAccess()">
+    <div class="alert alert-warning mb-0 modal-warning">
+      Are you sure you want to accept this article?
+    </div>
+    <div class="modal-footer pt-2 pb-2">
+      <button type="button" class="btn btn-outline-primary" (click)="modal.close(false)">Cancel</button>
+      <button type="button" class="btn btn-success" (click)="modal.close(true)">Accept</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Reject modal -->
+<ng-template #reject let-modal>
+  <div *ngIf="hasEditorAccess()">
+    <div class="alert alert-warning mb-0 modal-warning">
+      Are you sure you want to reject this article?
+    </div>
+    <div class="modal-footer pt-2 pb-2">
+      <button type="button" class="btn btn-outline-primary" (click)="modal.close(false)">Cancel</button>
+      <button type="button" class="btn btn-danger" (click)="modal.close(true)">Reject</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Once reject has gone through, remind them to let the person know. -->
+<ng-template #rejectFinished let-modal>
+  <div *ngIf="hasEditorAccess()">
+    <div class="alert alert-warning mb-0 modal-warning">
+      Remember to let {{article.articleModifier}} know what they need to do to improve this article.
+    </div>
+    <div class="modal-footer pt-2 pb-2">
+      <button type="button" class="btn btn-primary" (click)="modal.close(false)">Okay</button>
+    </div>
+  </div>
+</ng-template>
+
+
+<div *ngIf="isLoading; else notLoading">
+  <div class="alert alert-info">
+    Loading...
+  </div>
+</div>
+<ng-template #notLoading>
+  <div *ngIf="article.isError(); else elseIssue">
+
+    <div class="card mb-4">
+      <div class="card-body alert-danger">
+        {{article.getErrorText()}}
+      </div>
+    </div>
+  </div>
+  <ng-template #elseIssue>
+    <div *ngIf="article.status == 1" class="alert alert-info">
+      This article was edited. For the edited version of this article see <a routerLink="/tools/articleDraft/{{article.successor}}">article {{article.successor}}</a>
+    </div>
+    <div *ngIf="article.status == 2" class="alert alert-danger">
+      This article has been rejected and is included here for archival purposes.
+    </div>
+    <div *ngIf="article.status == 3" class="alert alert-success">
+      <p>This article has been accepted.</p>
+      <p>
+        If there were major revisions, you may want to <a routerLink="/tools/lemmaMeanings/{{article.lemma}}">update which meanings the texts links to</a>.
+      </p>
+    </div>
+
+    <h2 id="page_title">Article Draft for {{article.lemma}}:</h2>
+    <div class="article-draft-holder">
+      <def-editor #editor [showRaw]="isResolved()" [isEditable]="editingArticle" [lemma]="article.lemma" [occurrences]="article.occurrences" [currentRawArticle]="article.raw"></def-editor>
+
+      <div *ngIf="report.error()">
+        <div class="card mb-2">
+          <div class="card-body alert-danger">
+            {{report.getErrorText()}}
+          </div>
+        </div>
+      </div>
+      <div class="d-inline-block" *ngIf="!isResolved() && !editingArticle">
+        <button *ngIf="hasEditorAccess()" (click)="acceptArticle(accept)" class="btn btn-success mr-2">Accept</button>
+        <button *ngIf="hasEditorAccess()" (click)="rejectArticle(reject)" class="btn btn-danger mr-2">Reject</button>
+        <button (click)="editArticle()" class="btn btn-primary mr-2">Edit Article</button>
+      </div>
+      <div class="d-inline-block" *ngIf="editingArticle">
+        <button (click)="updateArticle(editor.rawArticle, editor.previewDef)" class="btn btn-primary mr-2">Make Changes to Article</button>
+      </div>
+    </div>
+  </ng-template>
+</ng-template>
+
+
+<div class="container mb-4 no-gutters">
+  <div class="row mb-2">
+    <div class="col-12 p-0">
+      <a routerLink="/tools/myDrafts/" class="btn btn-primary">Back to my articles</a>
+    </div>
+  </div>
+  <div class="row mb-2">
+    <div class="col-12 p-0">
+      <a *ngIf="hasEditorAccess()" routerLink="/tools/submittedDrafts/" class="btn btn-primary">Back to submitted articles</a>
+    </div>
+  </div>
+</div>

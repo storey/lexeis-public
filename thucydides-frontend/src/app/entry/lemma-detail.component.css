@@ -1,0 +1,25 @@
+/* Lemma information panel */
+#lemmaCollapse {
+ padding-top: 15px;
+}
+
+#lemmaCollapse .col {
+ margin-bottom: 10px;
+}
+
+.context-list .lemma-info-name {
+ margin-left: 10px;
+}
+
+.lemma-info-name {
+ font-weight: bold;
+}
+
+.col {
+  margin-top: 7px;
+}
+
+.show-hide-table {
+  text-align: center;
+  font-size: 12px;
+}

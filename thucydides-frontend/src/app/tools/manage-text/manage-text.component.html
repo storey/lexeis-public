@@ -1,0 +1,27 @@
+<h1>Manage Text</h1>
+
+<h2>Edit The Text</h2>
+<p>
+  Edit the lemmata, lemma meanings, and contexts of the text.
+</p>
+<p>
+  <em>Note: you can only edit a single section at a time.</em>
+</p>
+<p>Choose Section:</p>
+<div class="section-jump-holder">
+  <section-jump [displayType]="'Section'" [baseURL]="'/tools/editText/'" [useDots]="true"></section-jump>
+</div>
+
+<h2 class="mt-4">Manage Lemma Meanings</h2>
+<p>
+  When editing the meaning links, it sometimes makes more sense to look at all of
+  the occurrences of a single lemma rather than the many lemma in a section. Use
+  the search area below to search for a lemma to edit in this way.
+</p>
+<search [linkDestination]="'tools/lemmaMeanings/'"></search>
+
+<h2 class="mt-4">Recompile Text</h2>
+<p>
+  If the database and texts shown seem to be out of sync, you can
+  <a routerLink="/tools/recompileText/">recompile them all from here.</a>
+</p>

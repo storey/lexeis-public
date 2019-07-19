@@ -1,0 +1,65 @@
+<h1>Edit Word</h1>
+<div *ngIf="loading; else notLoading">
+  <div class="alert alert-info">
+    Loading...
+  </div>
+</div>
+<ng-template #notLoading>
+  <div *ngIf="token.isError() else elseText">
+    <div class="alert alert-danger">
+      {{token.getErrorText()}}
+    </div>
+  </div>
+  <ng-template #elseText>
+    <p>
+      <span>Word</span>: {{token.token}} ({{token.tokenIndex}})
+      <small>
+        <a routerLink="{{token.getSectionEditLink()}}">(Back to Section {{token.sectionCode}})</a>
+      </small>
+    </p>
+
+
+
+    <form id="lemmaForm" (ngSubmit)="onSubmit(lemmaForm)" novalidate #lemmaForm="ngForm">
+      <div class="form-group">
+        <label for="lemma">Lemma:</label>
+        <input [(ngModel)]="lemma" type="text" name="lemma" class="form-control" id="lemma" placeholder="Enter the Lemma" maxlength="64" required />
+        <small class="form-text text-muted">The lemma should be in unicode, e.g. "βουλεύω".</small>
+        <div class="invalid-feedback">
+          Please include a lemma.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="lemmaMeaning">Lemma Meaning:</label>
+        <input [(ngModel)]="lemmaMeaning" type="text" name="lemmaMeaning" class="form-control" id="lemmaMeaning" placeholder="Enter the Lemma Meaning" maxlength="64"/>
+        <small class="form-text text-muted">Meaning should be in the format I.1, II.C.5, etc.</small>
+      </div>
+
+      <div class="form-group">
+        <label for="context">Context:</label>
+        <select [(ngModel)]="context" name="context" class="form-control" id="context" required>
+          <option *ngFor="let c of contexts; let i = index" value="{{i}}">{{c}}</option>
+        </select>
+        <div class="invalid-feedback">
+          Please choose a context.
+        </div>
+      </div>
+
+
+      <!-- Submission error -->
+      <div *ngIf="report.error();">
+        <div class="alert alert-danger">
+          {{report.getErrorText()}}
+        </div>
+      </div>
+      <!-- Submit -->
+      <div *ngIf="!loadingReport; else elseSubmit">
+        <button type="submit" class="btn btn-primary">Edit Word</button>
+      </div>
+      <ng-template #elseSubmit>
+        <button class="btn btn-primary" disabled>Editing Word...</button>
+      </ng-template>
+    </form>
+  </ng-template>
+</ng-template>

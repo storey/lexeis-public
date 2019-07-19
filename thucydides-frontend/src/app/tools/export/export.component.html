@@ -1,0 +1,29 @@
+<h1>Export Information</h1>
+<p>
+  Export all of the information for this lexicon into a form it can be recompiled. This will take a while (and there are multiple steps).
+</p>
+<div *ngIf="!loadingResult; else elseSubmit">
+  <div *ngIf="report.error();">
+    <div class="alert alert-danger">
+      {{report.getErrorText()}}
+    </div>
+  </div>
+  <div *ngIf="report.isSuccess();">
+    <div class="alert alert-success">
+      {{report.getErrorText()}}
+    </div>
+    <a class="btn btn-primary mt-2" [href]="getLexiconExportHref()">Download Export</a>
+
+  </div>
+  <p *ngIf="!report.isSuccess();">
+    <button class="btn btn-primary mt-2" (click)="generateExport()">Create Export</button>
+  </p>
+</div>
+<ng-template #elseSubmit>
+  <p>
+    {{loadingMessage}}
+  </p>
+  <p>
+    <ngb-progressbar type="info" [value]="progress" [striped]="true" [animated]="true" [height]="'30px'"><i>{{progress}}%</i></ngb-progressbar>
+  </p>
+</ng-template>

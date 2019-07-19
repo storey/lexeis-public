@@ -1,0 +1,20 @@
+<div class="container-fluid d-flex flex-column-reverse flex-md-row">
+    <div class="text-holder">
+      <section-display [displayType]="displayType" [locationSpec]="locationSpec" [contextDisplayType]="contextDisplayType"
+        [lemma]="targetLemma" [displayText]="displayText" [isLoading]="loading" [busy]="busy"></section-display>
+      <div class="text-right">
+        <a *ngIf="showEditLink()" routerLink="{{getEditLink()}}">(Edit section)</a>
+      </div>
+      <div class="credit-footer">
+        <p class="mb-0">
+          Click on a word in the text to view the associated lemma.
+        </p>
+        <p>
+          Source: "{{author_name}}. <span class="font-italic">{{getTextName()}}</span>. {{getTextPubInfo()}}"
+        </p>
+      </div>
+    </div>
+    <div class="sidebar-holder">
+      <text-sidebar [displayType]="displayType" [contextDisplayType]="contextDisplayType" [locationSpec]="locationSpec" (changeContextDisplay)="changeContextDisplay($event)"></text-sidebar>
+    </div>
+</div>

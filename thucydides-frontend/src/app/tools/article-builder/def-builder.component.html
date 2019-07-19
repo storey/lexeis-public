@@ -1,0 +1,166 @@
+<!-- Article author modal -->
+<ng-template #author let-modal>
+  <div class="alert alert-info mb-0">
+    You are submitting a new article starting from an article written by {{getPriorAuthor()}}. Who would you like to be the author of the new article? If you made only minor edits, choose the former author. If you wrote a new article from scratch, choose yourself.
+  </div>
+  <div class="modal-footer pt-2 pb-2">
+    <button type="button" class="btn btn-outline-primary" (click)="modal.close(true)">Keep {{getPriorAuthor()}} as the author of this article</button>
+    <button type="button" class="btn btn-outline-primary" (click)="modal.close(false)">Make me the author of this new article.</button>
+  </div>
+</ng-template>
+
+<h2>Article Builder: {{lemma}}</h2>
+<div *ngIf="submitResult.isSuccess(); else elseSuccess">
+  <div>
+    <div class="alert alert-success d-inline-block" role="alert">
+      Your article was successfully submitted! It will now be reviewed by an editor.
+    </div>
+  </div>
+  <a class="btn btn-primary" routerLink="/tools/articleBuilder">Write Another Article</a>
+  <a class="btn btn-outline-primary ml-2" routerLink="/user">User Dashboard</a>
+</div>
+<ng-template #elseSuccess>
+  <p>
+    A tool for previewing how definitions will apper. Make sure you are familiar with the <a href="assets/guides/articleGuidelinesDecember_30_2018.docx">guidelines for writing articles</a> before you begin work.
+  </p>
+
+  <div *ngIf="isLoading; else notLoading">
+    <div class="alert alert-info">
+      Loading...
+    </div>
+  </div>
+  <ng-template #notLoading>
+    <div *ngIf="lemmaData.isError(); else elseEntry">
+
+      <div class="card">
+        <div class="card-body alert-danger">
+          {{lemmaData.getErrorText()}}
+        </div>
+      </div>
+    </div>
+    <ng-template #elseEntry>
+      <div class="container mb-4">
+        <div *ngIf="lemmaData.articlePending" class="alert alert-danger d-inline-block" role="alert">
+          WARNING: There is already a draft of this article pending review. Before you write this article, talk to an editor to make sure you aren't duplicating work.
+        </div>
+        <div *ngIf="lemmaData.lemmaStatus > 1" class="alert alert-danger d-inline-block" role="alert">
+          WARNING: The article for this lemma has already been written. Don't overwrite it unless you know what you are doing.
+        </div>
+        <div *ngIf="!lemmaData.assignedToUser" class="alert alert-danger d-inline-block" role="alert">
+          WARNING: The article has been assigned to another user to write. Please talk to an editor before making changes.
+        </div>
+        <def-editor #editor [showRaw]="true" [isEditable]="true" [lemma]="lemmaData.token" [occurrences]="lemmaData.occurrences" [currentRawArticle]="lemmaData.rawFullDefinition"></def-editor>
+        <div class="d-flex justify-content-end text-right">
+          <div *ngIf="showCustomAuthor; else elseCustomAuthor">
+            <p class="mb-1">
+              <span class="link-like" (click)="toggleCustomAuthor(false)">- Hide custom author.</span>
+            </p>
+            <p class="mb-1 text-left">
+              If this article has a custom author (say, you took it from LSJ),
+              put the name of the author in the field below. Then, speak to your
+              editor and have them add the article's source to the bibliography
+              for this lemma.
+              <span class="font-italic">If you want to keep the prior author of this
+              article as the author, leave the field blank and click submit, then
+              choose "keep prior author" in the popup that appears.</span>
+            </p>
+            <div class="row">
+              <div class="col-12 col-md-6 offset-md-6">
+                <div class="form-group">
+                  <label for="customAuthor">Custom Author:</label>
+                  <input [(ngModel)]="customAuthor" type="text" name="customAuthor" class="form-control" id="customAuthor" placeholder="Custom Author" maxlength="128"/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ng-template #elseCustomAuthor>
+            <div class="mb-2">
+              <span class="link-like" (click)="toggleCustomAuthor(true)">+ Add a custom author.</span>
+            </div>
+          </ng-template>
+        </div>
+        <div class="row">
+          <div *ngIf="submitResult.error()" class="col-12 alert alert-danger" role="alert">
+            {{submitResult.getErrorText()}}
+          </div>
+          <div class="col-12 d-flex justify-content-end">
+            <button (click)="downloadFile(editor.rawArticle)" class="btn btn-primary" type="button">Download Article</button>
+            <button (click)="submitArticle(author, editor.rawArticle, editor.previewDef)" class="btn btn-primary ml-2" type="button" [disabled]="editor.defHasError()">Submit Article for Review</button>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-12">
+            <span class="lemmaTitle">Style Guide:</span> <span class="ml-2 show-hide link-like" (click)="toggleArticleExample()">({{articleExampleShowHideText}})</span>
+            <div *ngIf="showArticleExample">
+              <ol>
+                <li>
+                  Main definitions are marked with a Roman numeral (I., II., III., IV., etc).
+                </li>
+                <li>
+                  Subdefinitions are marked with a capital Latin character (A., B., C., etc).
+                </li>
+                <li>
+                  Sub-subdefinitions are marked with an Arabic numeral (1., 2., 3.).
+                </li>
+                <li>
+                  Key passages are marked by writing "Key Passage: ", followed by any number of section, greek, translation triplets, where the translation must be in quotations (e.g. 4.84.2 ἀκούσαντας βουλεύσασθαι "to make a decision after listening").
+                </li>
+                <li>
+                  If you want to write multiple articles for the same lemma, e.g. a preposition with division by meaning or division by case, start each sub article with the marker <pre class="mb-0">======---By Case---======</pre>replacing "By Case" with the heading for that article.
+                </li>
+
+              </ol>
+              <span class="lemmaTitle">Example:</span>
+              <div class="exampleDef">
+                ἐξάμπλε (8)<br/>
+                I. Active <br/>
+                A. First Example: 3.4.5, 6.7.8. <br/>
+                Key Passage: <br/>
+                3.4.5 ἄν ἐξάμπλε "an example"<br/>
+                B. Second Example <br/>
+                1. Usual Meaning 8.7.6<br/>
+                2. Unusual Usage 1.900.9<br/>
+              </div>
+            </div>
+
+            <!-- <div *ngIf="showArticleExample" class="exampleDef">
+              παραπλέω (62 (or 63 as below) sail alongside (also Hdt, Xen. Hell. Anab.)<br/>
+              I. Without object, of the coast (usually the Peloponnese or Sicily or Asia Minor): 1.61.4, 2.25.3, 2.90.4, 3.7.2, 3.32.1, 3.33.2, 3.34.1, 3.91.6, 3.112.7, 4.2.3 (2X), 5.62.2, 6.34.5, 6.62.3 (2X), 6.64.1, 6.88.7, 7.23.2, 7.35.2, 8.10.3, 8.23.4, 8.65.1, 8.95.1, 8.101.3, 8.104.1<br/>
+              II. With expression of direction, A. ἐς (of place to disembark) 1.111.2, 2.84.5, 2.86.1, 3.95.1, 4.25.5 (ἀπὸ κάλω of towing), 4.45.2, 6.50.2, 6.50.3, 7.1.1, 7.33.5, 7.50.2, 8.4.1, 8.63.2, 8.100.2 B. ἐπί + acc of hostility or non-disembarking 2.25.5, 2.86.2, 6.52.1, 8.20.2, 8.31.2, 8.41.3 ἐπί + gen. of direction or heading, 2.102.1, 6.94.1, 7.25.4, 7.26.3, 7.35.1, 8.102.1 C. other (ἔξω τοῦ κόλπου, ταύτῃ) 2.83.2, 2.90.2<br/>
+              III. With accus. of place, object or person 2.84.1 (cf. 7.40.5), 6.47.1, 6.62.2, 6.104.2, 7.56.1, 8.56.4, 8.94.1, 8.101.2, 8.101.3<br/>
+            </div> -->
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <span class="lemmaTitle">Info:</span>
+          </div>
+        </div>
+        <div class="row justify-content-center mb-2">
+          <div class="btn-group standardSelector" role="group" aria-label="Context Highlighting">
+            <a *ngFor="let order of instanceOrders" class="btn" [ngClass]="getInstOrderClass(order[0])" (click)="setInstOrderType(order[0])">{{order[1]}}</a>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-12">
+            <div class="list-group">
+              <a *ngFor="let o of this.lemmaData.occurrences | organizeOccurrenceInfo:[currentInstOrder[0]]" class="list-group-item">
+                <ul class="occ-info-list">
+                  <li><span class="occ-info-header"><span class="occ-info-label">{{o[0]}}:</span> {{o[3]}}.</span></li>
+                  <li><span class="occ-info-label">Previous Word:</span> "{{o[2]}}" <span class="occ-info-label">Next Word:</span> "{{o[4]}}" <span class="occ-info-label">Context:</span> {{contextTypeToName(o[1])}}.</li>
+                  <li><span class="occ-info-label">Surrounding Text:</span></li>
+                  <li>...{{o[5]}} <span class="font-weight-bold">{{o[3]}}</span> {{o[6]}}...</li>
+                </ul>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-12">
+            <a class="btn btn-primary btn-sm mt-2" [href]="getCSVExportHref()">Export CSV</a>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </ng-template>
+</ng-template>

@@ -1,0 +1,68 @@
+<h1 class="text-center">Word List</h1>
+
+<div *ngIf="loadingCombos; else elseCombos">
+  <div class="alert alert-info central-alert">
+    Loading...
+  </div>
+</div>
+<ng-template #elseCombos>
+  <div *ngIf="combos.isError(); else elseCombos2">
+    <div class="alert alert-danger central-alert">
+      {{combos.getErrorText()}}
+    </div>
+  </div>
+  <ng-template #elseCombos2>
+    <letter-display [alphabet]="upperAlphabet" [label]="topLabel"></letter-display>
+    <div *ngIf="!validFirstLetter()" class="p-3">
+      <div class="alert alert-danger central-alert">
+        "{{firstLetter}}" is not a valid first letter. Please select an option from the list above.
+      </div>
+    </div>
+    <div *ngIf="showSecondBar" class="mt-3 mb-4">
+      <letter-display [alphabet]="secondAlphabet" [label]="secondLabel"></letter-display>
+    </div>
+    <div *ngIf="!validSecondLetter()" class="pr-3 pl-3">
+      <div class="alert alert-danger central-alert">
+        "{{secondLetter}}" is not a valid second letter. Please select an option from the list above.
+      </div>
+    </div>
+    <!-- pagination of list items -->
+    <div *ngIf="showPagination">
+      <div *ngIf="matchingLemmas == null; else elsePagination">
+        <div class="alert alert-info central-alert">
+          Loading...
+        </div>
+      </div>
+      <ng-template #elsePagination>
+        <div *ngIf="isError(matchingLemmas); else elsePagination2">
+          <div class="alert alert-danger central-alert">
+            {{getErrorText(matchingLemmas)}}
+          </div>
+        </div>
+        <ng-template #elsePagination2>
+          <div class="busy-holder">
+            <div [ngBusy]="{busy: busy, message: 'Loading...', delay: 10, wrapperClass: 'ng-busy ng-busy-left'}">
+              <div class="justify-content-center d-flex">
+                <div class="d-inline-block my-pagination">
+                  <pagination-controls id='topLevelPaginate' nextLabel="" previousLabel="" (pageChange)="currPage = $event"></pagination-controls>
+                </div>
+              </div>
+              <div class="container-fluid">
+                <div class="row justify-content-center">
+                  <div class="col-12 col-sm-12 col-md-10 col-lg-8 col-xl-8">
+                    <div class="list-group">
+                      <a *ngFor="let e of matchingLemmas | paginate: { id: 'topLevelPaginate', itemsPerPage: 10, currentPage: currPage }"
+                        class="list-group-item list-group-item-action" routerLink="/entry/{{e.token}}">
+                        <span class="option-token-holder">{{e.token}}</span> {{e.shortDef}}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ng-template>
+    </div>
+  </ng-template>
+</ng-template>

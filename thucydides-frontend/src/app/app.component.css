@@ -1,0 +1,53 @@
+/* for Gray, background is #FCFCFC, border is #333333, top bar color is #DDDDDD */
+/* for Blue, dark: #1f3340; background is #ebf5ff; top bar: rgb(198, 226, 255) */
+
+.overall-container {
+  margin: 0px 0px;
+}
+
+#topbar {
+  background-color: #c6e2ff;
+  padding: 5px;
+
+  width: 100%;
+}
+
+#titleHolder {
+  display: inline-block;
+  padding-left: 15px;
+}
+
+#titleHolder a {
+  text-decoration: none;
+  color: #1f3340;
+  font-weight: 600;
+  font-size: 30px;
+}
+
+#contentContainer {
+  padding: 15px 0px;
+  margin-bottom: 45px; /* 35 footer pixels plus 10 */
+  z-index: 1;
+}
+
+.btn:focus, .btn:active, .btn.active {
+   outline: none !important;
+   box-shadow: 0 0 0 0 rgba(0,0,0,0) !important;
+}
+
+/* Footer */
+/* adapted from https://getbootstrap.com/docs/4.0/examples/sticky-footer/ */
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 35px;
+  line-height: 35px; /* Vertically center the text */
+  background-color: #c6e2ff;
+
+  padding-right: 10px;
+  text-align: right;
+  font-size: 14px;
+
+  z-index: 2;
+}

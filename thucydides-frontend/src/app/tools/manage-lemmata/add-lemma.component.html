@@ -1,0 +1,122 @@
+<h1>Add New Lemma</h1>
+<div class="alert alert-warning">
+  Under most circumstances, there is no need to add a new lemma; they should have mostly been set up during the initial lexicon creation page.
+  <strong>Make sure</strong> you have a good reason for doing this (for example, the text references a lemma that does not exist which you think should exist).
+</div>
+
+<div *ngIf="isLoading; else notLoading">
+  <div class="alert alert-info">
+    Loading...
+  </div>
+</div>
+<ng-template #notLoading>
+  <div *ngIf="info.error(); else elseEntry">
+    <div class="alert alert-danger">
+      {{info.getErrorText()}}
+    </div>
+  </div>
+  <ng-template #elseEntry>
+
+    <form id="lemmaForm" (ngSubmit)="onSubmit(lemmaForm)" novalidate #lemmaForm="ngForm">
+      <div class="form-group">
+        <label for="lemma">Lemma:</label>
+        <input [(ngModel)]="lemma" type="text" name="lemma" class="form-control" id="lemma" placeholder="Enter the Lemma" maxlength="64" required />
+        <small class="form-text text-muted">The lemma should be in unicode, e.g. "βουλεύω".</small>
+        <div class="invalid-feedback">
+          Please include a lemma.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="shortDef">Short Definition:</label>
+        <textarea [(ngModel)]="shortDef" name="shortDef" class="form-control" id="shortDef" rows="3" maxlength="800" required></textarea>
+        <div class="invalid-feedback">
+          Please provide a short definition.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="pos">Part of Speech:</label>
+        <select [(ngModel)]="pos" name="pos" class="form-control" id="pos" required>
+          <option *ngFor="let pos of info.partsOfSpeech" value="{{pos}}">{{pos}}</option>
+        </select>
+        <div class="invalid-feedback">
+          Please choose a part of speech.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="compoundParts">Compound Parts:</label>
+        <select [(ngModel)]="compoundParts" name="compoundParts" class="form-control tall-select" id="compoundParts" multiple>
+          <option *ngFor="let c of info.compoundParts" value="{{c.id}}">{{c.name}}</option>
+        </select>
+        <small class="form-text text-muted">You may select multiple compound parts or none.</small>
+      </div>
+
+      <div class="form-group">
+        <label for="roots">Root:</label>
+        <select [(ngModel)]="roots" name="roots" class="form-control tall-select" id="roots" multiple>
+          <option *ngFor="let r of info.rootGroups" value="{{r.id}}">{{r.name}}</option>
+        </select>
+        <small class="form-text text-muted">You may select multiple roots or none.</small>
+      </div>
+
+      <div class="form-group">
+        <label for="semanticGroups">Semantic Groups:</label>
+        <select [(ngModel)]="semanticGroups" name="semanticGroups" class="form-control tall-select" id="semanticGroups" multiple>
+          <option *ngFor="let s of info.semanticGroups" value="{{s.id}}">{{s.name}}</option>
+        </select>
+        <small class="form-text text-muted">You may select multiple semantic groups or none.</small>
+      </div>
+
+      <div class="illustration-holder">
+        <div class="form-group">
+          <input type="checkbox" [(ngModel)]="hasIllustration" name="hasIllustration" id="hasIllustration"/> <!-- (click)="selectArticle(article)" [checked]="article.checked"  -->
+          <label for="hasIllustration" class="ml-2">Has Illustration</label>
+        </div>
+
+        <div *ngIf="hasIllustration" class="form-group">
+          <label for="illustration">Illustration:</label>
+          <input [(ngModel)]="illustration" type="file" name="illustration" id="illustration" class="form-control-file" required  (change)="onIllustrationChanged($event)">
+          <div class="invalid-feedback">
+            Please upload a file to use as the illustration.
+          </div>
+        </div>
+
+        <div *ngIf="hasIllustration" class="form-group">
+          <label for="caption">Illustration Caption:</label>
+          <input [(ngModel)]="caption" type="text" name="Caption" class="form-control" id="caption" placeholder="caption" maxlength="800" required />
+          <div class="invalid-feedback">
+            Please include a caption.
+          </div>
+        </div>
+      </div>
+
+
+      <div class="form-group">
+        <label for="bibliography">Bibliography:</label>
+        <textarea [(ngModel)]="bibliography" name="bibliography" class="form-control" id="bibliography" rows="3" maxlength="800"></textarea>
+        <small class="form-text text-muted">Use a newline to separate bibliography entries.</small>
+      </div>
+
+      <div class="form-group">
+        <label>[You will have to add a long definition after creating this lemma using the article builder.]</label>
+      </div>
+
+
+      <!-- Submission error -->
+      <div *ngIf="report.error()">
+        <div class="alert alert-danger">
+          {{report.getErrorText()}}
+        </div>
+      </div>
+      <!-- Submit -->
+      <div *ngIf="!loadingReport; else elseSubmit">
+        <button type="submit" class="btn btn-primary">Create Lemma</button>
+      </div>
+      <ng-template #elseSubmit>
+        <button class="btn btn-primary" disabled>Creating Lemma...</button>
+      </ng-template>
+    </form>
+  </ng-template>
+</ng-template>

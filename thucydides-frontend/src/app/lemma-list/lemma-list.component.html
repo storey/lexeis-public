@@ -1,0 +1,7 @@
+<div class="list-group lemma-list">
+  <a *ngFor="let e of entryList" class="list-group-item list-group-item-action" routerLink="/{{linkDestination}}{{e.destination}}">
+    <span class="option-token-holder">{{e.token}}</span>
+    <span *ngIf="!e.isAlias">{{e.shortDef}}</span>
+    <span *ngIf="e.isAlias">See {{e.destination}}. <small>Click here to go to the entry for {{e.destination}}.</small></span>
+  </a>
+</div>

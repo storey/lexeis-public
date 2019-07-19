@@ -1,0 +1,44 @@
+.lemmaTitle {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.exampleDef {
+  padding: 10px;
+  background: white;
+  border: 1px #c6c6c6 solid;
+}
+
+/* More link info */
+.show-hide {
+  font-size: 10px;
+  text-align: right;
+  cursor: pointer;
+}
+
+.occ-info-list {
+  list-style-type: none;
+  padding: 0px;
+  margin: 0px;
+}
+
+.occ-info-label {
+  font-weight: bold;
+}
+
+.occ-info-header {
+  font-size: 16pt;
+}
+
+
+
+.standardSelector a.btn-outline-primary {
+  color: #007bff !important;
+}
+.standardSelector a.btn-outline-primary:hover {
+  color: #ffffff !important;
+}
+
+.standardSelector a.btn-primary {
+  color: #ffffff !important;
+}

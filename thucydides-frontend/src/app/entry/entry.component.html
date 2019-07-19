@@ -1,0 +1,189 @@
+
+<!-- Article status modal -->
+<ng-template #statusinfo let-modal>
+  <div *ngIf="showStatusModal()">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">How reviewed is this entry?</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>
+        Status: <span class="font-weight-bold">{{getStatusLabel()}}</span>
+      </p>
+      <p>
+        {{getStatusDescription()}}
+      </p>
+      <div *ngIf="+entryData.status < STATUSES.length - 1" >
+        <hr/>
+        <p>
+          {{nextStatusStepsText()}}
+        </p>
+        <div *ngIf="report.error();">
+          <div class="alert alert-danger mb-2">
+            {{report.getErrorText()}}
+          </div>
+        </div>
+        <p>
+          <button class="btn btn-primary" (click)="updateStatus()">Update status to "{{getNextStatus()}}"</button>
+        </p>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+
+<div *ngIf="isLoading; else notLoading">
+  <div class="alert alert-info">
+    Loading...
+  </div>
+</div>
+<ng-template #notLoading>
+  <div *ngIf="hasEditorPermissions()" class="row mb-2">
+    <div class="col-12 d-flex justify-content-end">
+      <div>
+        <span class="mr-2"> View as Editor?</span>
+        <div class="btn-group btn-group-toggle btn-group-sm" name="radioBasic">
+          <label [ngClass]="getResolvedRadioClass(true)" (click)="setShowResolved(true)">
+            <input type="radio" class="invisible-radio" [value]="true"> Yes
+          </label>
+          <label [ngClass]="getResolvedRadioClass(false)" (click)="setShowResolved(false)">
+            <input type="radio" class="invisible-radio" [value]="false"> No
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div *ngIf="entryData.isError(); else elseEntry">
+      <div class="card-body alert-danger">
+        {{entryData.getErrorText()}}
+      </div>
+    </div>
+    <ng-template #elseEntry>
+      <!-- Top section with lemma information -->
+      <div class="card-body">
+        <div class="row align-items-end no-gutters">
+          <div class="col-10">
+            <div *ngIf="useEditorView()" [ngClass]="getStatusIconClasses()" (click)="openModal(statusinfo)"></div>
+            <h2 class="card-title d-inline-block break-words">{{entryData.token}}</h2>
+            <a *ngIf="useEditorView()" routerLink="/tools/editLemma/{{entryData.token}}" class="ml-1">(edit)</a>
+          </div>
+          <div class="col-2">
+            <div class="more-link">
+              <a (click)="lemmaCollapse()"  aria-controls="lemmaCollapse"
+                 [attr.aria-expanded]="!lemmaCollapsed" tabindex="3">
+                {{lemmaCollapseText}}
+              </a>
+            </div>
+          </div>
+        </div>
+        <div id="lemmaCollapse" [ngbCollapse]="lemmaCollapsed">
+          <lemma-detail [myEntry]="entryData"></lemma-detail>
+        </div>
+      </div>
+      <ul class="list-group list-group-flush">
+        <!-- Middle section with definition information -->
+        <li class="list-group-item">
+          <div class="row align-items-end mb-2 no-gutters">
+            <div class="col-10">
+              <span class="entry-subsection-title">{{definitionTitle}}</span>
+            </div>
+            <div class="col-2 more-link">
+              <a (click)="definitionCollapse()" tabindex="3">
+                {{definitionCollapseText}}
+              </a>
+            </div>
+          </div>
+          <div class="row" id="definitionCollapse">
+            <div class="col-12">
+              <p *ngIf="definitionCollapsed">{{entryData.shortDef}}</p>
+              <div *ngIf="!definitionCollapsed">
+                <definition-detail [myEntry]="entryData" [targetMeaning]="targetMeaning"></definition-detail>
+              </div>
+            </div>
+          </div>
+        </li>
+        <!-- Bottom sections with occurrence information -->
+        <li class="list-group-item">
+          <div class="row align-items-end no-gutters">
+            <div class="col-10">
+              <span class="entry-subsection-title">{{occurrencesTitle}} </span><span class="small">({{entryData.frequency.all}})</span>
+            </div>
+            <div class="col-2 more-link">
+              <a (click)="occurrencesCollapse()" tabindex="3">
+                {{occurrencesCollapseText}}
+              </a>
+            </div>
+          </div>
+          <div *ngIf="!occurrencesCollapsed" class="row" id="occurrencesCollapse">
+            <div class="col-12">
+                <div *ngIf="entryData.occurrences.length == 0; else elseOccurrences">
+                  <div class="alert alert-danger alert-top-space">
+                    This lemma does not occur in the text.
+                  </div>
+                </div>
+                <ng-template #elseOccurrences>
+                  <div class="d-flex justify-content-center bd-highlight mb-3">
+                    <div>
+                      <span class="occurrence-order-label">Order By:</span>
+                      <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="occurrenceDisplayType">
+                        <label ngbButtonLabel class="btn btn-outline-primary">
+                          <input ngbButton type="radio" [value]="0"> Location
+                        </label>
+                        <label ngbButtonLabel class="btn btn-outline-primary">
+                          <input ngbButton type="radio" [value]="1"> Context
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="(occurrenceDisplayType == 0) && (entryData.occurrences.length < 10); else elseOccurrenceList">
+                    <ul class="default-ul">
+                      <li *ngFor="let o of entryData.occurrences | organizeOccurrenceColumns:[0,occurrenceDisplayType]">
+                        <a [routerLink]="getOccurrenceLink(o[0], entryData.token)">{{o[0]}}</a>  {{o[1]}}
+                      </li>
+                    </ul>
+                  </div>
+                  <ng-template #elseOccurrenceList>
+                    <div class="container-fluid">
+                      <div *ngIf="(occurrenceDisplayType == 0) || (contextNames.length <= 4); else elseContextDisplay" class="row">
+                        <!-- Only display this way if we have a lot of occurrences by location or 4 or fewer context columns -->
+                        <div *ngFor="let col of getOccurrenceColumns()" class="col-6 col-md-3 no-gutters" [ngClass]="getColClass(col)">
+                          <div class="contextLabels" *ngIf="(occurrenceDisplayType == 1)">
+                            <span>{{contextNames[col]}}</span>
+                          </div>
+                          <ul class="default-ul">
+                            <li *ngFor="let o of entryData.occurrences | organizeOccurrenceColumns:[col,occurrenceDisplayType]">
+                              <a [routerLink]="getOccurrenceLink(o[0], entryData.token)">{{o[0]}}</a> {{o[1]}}
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <ng-template #elseContextDisplay>
+                        <!-- This only happens if we have more than 4 contexts  -->
+                        <div *ngFor="let context of contextNames; index as contextIndex">
+                          <div class="contextLabels">
+                            <span>{{context}}</span>
+                          </div>
+                          <div class="row">
+                            <div *ngFor="let col of getOccurrenceColumns()" class="col-6 col-md-3 no-gutters" [ngClass]="getColClass(col)">
+                              <ul class="default-ul">
+                                <li *ngFor="let o of entryData.occurrences | organizeContextColumns:[col,contextIndex]">
+                                  <a [routerLink]="getOccurrenceLink(o[0], entryData.token)">{{o[0]}}</a> {{o[1]}}
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                    </div>
+                  </ng-template>
+                </ng-template>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </ng-template>
+  </div>
+</ng-template>

@@ -1,0 +1,11 @@
+<ul>
+  <li *ngFor="let curr of getListItems();">
+    <div>
+      <a *ngIf="showPartOnly(); else elsePart" routerLink="{{getRouterLink(curr)}}" routerLinkActive="active-item">{{getLinkText(curr)}}</a>
+      <ng-template #elsePart>
+        <span (click)="openList(curr)" class="link-like">{{getLinkText(curr)}}</span>
+      </ng-template>
+    </div>
+    <sections-browse *ngIf="hasSublist(curr)" [displayType]="displayType" [openSet]="open" [level]="(level+1)"></sections-browse>
+  </li>
+</ul>

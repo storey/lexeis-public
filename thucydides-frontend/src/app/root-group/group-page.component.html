@@ -1,0 +1,34 @@
+<div *ngIf="isLoading; else notLoading">
+  <div class="alert alert-info">
+    Loading...
+  </div>
+</div>
+<ng-template #notLoading>
+  <div *ngIf="myGroup as group">
+    <div *ngIf="group.isError(); else elseGroup">
+      <div class="alert alert-danger">
+        {{group.getErrorText()}}
+      </div>
+    </div>
+    <ng-template #elseGroup>
+      <div>
+        <h2 class="d-inline-block">{{group.name}}</h2>
+        <a *ngIf="hasEditorPermissions()" routerLink="{{myGroup.getEditLink()}}" class="ml-1">(edit)</a>
+      </div>
+      <p *ngIf="group.associatedLemma">
+        <span class="lemma-label">Associated Lemma:</span>
+        <a routerLink="/entry/{{group.associatedLemma}}">{{group.associatedLemma}}</a>
+      </p>
+      <p *ngIf="group.description !=''">{{group.description}}</p>
+      <h4>{{listTitle}}</h4>
+      <div *ngIf="group.matchingLemmas.length == 0; else elseList">
+        <div class="alert alert-info">
+          There a currently no lemmata in this group.
+        </div>
+      </div>
+      <ng-template #elseList>
+        <lemma-list [entryList]="group.matchingLemmas" [linkDestination]="'entry/'"></lemma-list>
+      </ng-template>
+    </ng-template>
+  </div>
+</ng-template>

@@ -1,0 +1,103 @@
+<div *ngIf="isLoading; else notLoading">
+  <div class="alert alert-info">
+    Loading...
+  </div>
+</div>
+<ng-template #notLoading>
+  <div *ngIf="issue.isError(); else elseIssue">
+
+    <div class="card mb-4">
+      <div class="card-body alert-danger">
+        {{issue.getErrorText()}}
+      </div>
+    </div>
+  </div>
+  <ng-template #elseIssue>
+    <div class="container mb-4">
+      <div class="row mb-2">
+        <div class="col-12">
+          <div [ngClass]="getCardClass(issue.resolved)">
+            <div class="card-header">
+              <h2 class="mt-3">
+                <span *ngIf="issue.resolved; else elseHeader">
+                  <span class="text-success">Issue {{id}}: Resolved</span>
+                </span>
+                <ng-template #elseHeader>
+                  <span class="text-danger">Issue {{id}}: Unresolved</span>
+                </ng-template>
+              </h2>
+            </div>
+            <div class="card-body">
+              <div *ngIf="issue.resolved">
+                <p>
+                  Resolved by <strong>{{issue.resolved_user}}</strong> on {{issue.resolved_tstamp}}.
+                </p>
+                <div *ngIf="issue.resolved_comment.length > 0; else elseResolution">
+                  <p>
+                    <span class="info-label">Resolution Comment</span>:
+                  </p>
+                  <p class="card p-3 mb-1">
+                    {{issue.resolved_comment}}
+                  </p>
+                </div>
+                <hr/>
+                <h2>Original Issue:</h2>
+              </div>
+              <p>
+                <span class="info-label">Reported By</span>: {{issue.email}} on {{issue.tstamp}}.
+              <p>
+                <span class="info-label">Issue Location</span>: {{issue.location}}
+              </p>
+              <p>
+                <span class="info-label">Comment</span>:
+              </p>
+              <p class="card p-3 mb-1">
+                {{issue.comment}}
+              </p>
+
+
+              <div *ngIf="!issue.resolved">
+                <h3>Resolve Issue</h3>
+
+                <div *ngIf="report.error()">
+                  <div class="card">
+                    <div class="card-body alert-danger">
+                      {{report.getErrorText()}}
+                    </div>
+                  </div>
+                </div>
+
+                <form id="issueForm" (ngSubmit)="onSubmit(issueForm)" novalidate #issueForm="ngForm">
+                  <div class="form-group">
+                    <label for="commentInput">If you have any specific comments, add them here:</label>
+                    <textarea [(ngModel)]="issueComment" name="comment" class="form-control" id="commentInput" rows="3" maxlength="800" (keyup)="countCommentCharacters($event)"></textarea>
+                    <p [ngClass]="getCommentLengthWarningClasses()">
+                      <small class="character-warning-holder">{{getCommentLengthWarning()}}</small>
+                    </p>
+                    <div class="invalid-feedback">
+                      Please provide context for the issue.
+                    </div>
+                  </div>
+                  <div *ngIf="!loading; else elseSubmit">
+                    <button type="submit" class="btn btn-primary">Resolve Issue</button>
+                  </div>
+                  <ng-template #elseSubmit>
+                    <button class="btn btn-primary" disabled>Resolving...</button>
+                  </ng-template>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ng-template>
+
+<div class="container mb-4">
+  <div class="row mb-2">
+    <div class="col-12">
+      <a routerLink="/tools/reportedIssues/" class="btn btn-primary">Back to issues list</a>
+    </div>
+  </div>
+</div>

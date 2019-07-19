@@ -1,0 +1,8 @@
+.active-item {
+  color: inherit !important;
+  cursor: inherit !important;
+}
+
+.active-item:hover {
+  text-decoration: none;
+}
