@@ -1,0 +1,14 @@
+results/*
+results_old/*
+.DS_Store
+__pycache__/*
+input/~$dictionaryExcel.xlsx
+input/~$*.xlsx
+input/articles/*
+input/illustrations/*
+old/*
+input/~$contexts.xlsx
+input/Thucydides.db
+input/ThucydidesPelopGrWithPunct.xml
+input/GreekMorphologyThucEurPlato.db
+input_old_old/*
