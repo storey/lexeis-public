@@ -23,7 +23,7 @@
     "@ng-bootstrap/ng-bootstrap": "^4.0.1",
     "bootstrap": "^4.3.1",
     "core-js": "^2.5.4",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.1",
     "ng-busy": "^7.0.0",
     "ng-event-source": "^1.0.14",
     "ngx-pagination": "^3.2.1",
@@ -33,7 +33,7 @@
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.800.2",
+    "@angular-devkit/build-angular": "^0.1001.1",
     "@angular/cli": "^8.1.2",
     "@angular/compiler-cli": "^8.0.0",
     "@angular/language-service": "~8.0.0",
